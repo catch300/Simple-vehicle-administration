@@ -27,7 +27,7 @@ namespace test_project
         {
             
             services.AddControllersWithViews();
-            services.AddDbContext<VehicleDbContext>(options => 
+            services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
         }
 

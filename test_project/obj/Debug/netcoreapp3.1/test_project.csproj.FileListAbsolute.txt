@@ -28,23 +28,6 @@ C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.RazorTargetAssemblyInfo.cache
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.RazorTargetAssemblyInfo.cs
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Binder.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.csproj.CoreCompileInputs.cache
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
@@ -56,6 +39,18 @@ C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\test_project.pdb
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\test_project.Views.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\test_project.Views.pdb
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Project service.pdb
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.Views.pdb
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.csproj.CopyComplete
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\staticwebassets\test_project.StaticWebAssets.Manifest.cache
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\staticwebassets\test_project.StaticWebAssets.xml
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.dll
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.pdb
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.genruntimeconfig.cache
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
@@ -65,11 +60,6 @@ C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Project service.pdb
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.Views.pdb
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.csproj.CopyComplete
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\staticwebassets\test_project.StaticWebAssets.Manifest.cache
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\staticwebassets\test_project.StaticWebAssets.xml
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.dll
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.pdb
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.genruntimeconfig.cache
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.csproj.CoreCompileInputs.cache
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.MvcApplicationPartsAssemblyInfo.cache

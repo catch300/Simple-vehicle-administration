@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project_service.Models
 {
-    public class VehicleDbContext : DbContext
+    public class VehicleContext : DbContext
     {
-        public VehicleDbContext( )
+        public VehicleContext( )
         {
         }
 
-        public VehicleDbContext(DbContextOptions<VehicleDbContext> options) : base(options)
+        public VehicleContext(DbContextOptions<VehicleContext> options) : base(options)
         {
 
         }

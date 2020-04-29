@@ -3,20 +3,47 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
-using Project_service.Interface;
 using Project_service.Models;
 using System.Data.Entity;
+using Project_service.ViewModels;
 
 namespace Project_service.Service
 {
     public class VehicleService : IVehicleMake
     {
-        
-        //CREATE
+        VehicleContext db = new VehicleContext();
+
+        public VehicleService( VehicleContext _db)
+        {
+            db = _db;
+        }
+
+        //GET - VehicleMakes
+        public async Task<List<VehicleMake>> GetVehicleMakes( )
+        {
+            if (db != null)
+            {
+                return await (from a in db.VehicleMakes.AsNoTracking()
+                              select new VehicleMake
+                              {
+                                  Id = a.Id,
+                                  Name = a.Name,
+                                  Abrv = a.Abrv
+                              }).ToListAsync();
+                
+            }
+           
+                return null;
+                 
+        }
+
+       
+
+        //CREATE - VehicleMake
         public async Task<bool> CreateVehicleMake(VehicleMake _vehicleMake)
         {
-            using VehicleDbContext db = new VehicleDbContext();
-            Project_service.Models.VehicleMake vehicleMake = db.VehicleMakes.Where
+            
+            VehicleMake vehicleMake = db.VehicleMakes.Where
             (x => x.Id == _vehicleMake.Id).FirstOrDefault();
             if (vehicleMake == null)
             {
@@ -40,36 +67,77 @@ namespace Project_service.Service
             return await db.SaveChangesAsync() >= 1;
         }
 
-        //DELETE
-        public async Task<bool> DeleteVehicleMake(int id)
+        //UPDATE - VehicleMake
+        public async Task<int> editvehiclemake(int? id, VehicleMake vehiclemakeitem)
         {
-            using VehicleDbContext db = new VehicleDbContext();
-            Project_service.Models.VehicleMake vehicleMake =
-            db.VehicleMakes.Where(x => x.Id == id).FirstOrDefault();
-            if (vehicleMake != null)
+            int result = 0;
+
+            if (db != null)
             {
-                db.VehicleMakes.Remove(vehicleMake);
+                //Find the id for specific VehicleMake
+                var vehicleMake = await db.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (vehicleMake != null)
+                {
+                    //Update that VehicleMake
+                    db.VehicleMakes.Update(vehicleMake);
+
+                    //Commit the transaction
+                    result = await db.SaveChangesAsync();
+                }
+                return result;
             }
-            return await db.SaveChangesAsync() >= 1;
+
+            return result;
         }
 
-        //GET
-        public async Task<List<VehicleMake>> GetVehicleMakes( )
+        //DELETE - VehicleMake
+        public async Task<int> DeleteVehicleMake(int? id)
         {
-            using VehicleDbContext db = new VehicleDbContext();
-            return await (from a in db.VehicleMakes.AsNoTracking()
-                          select new VehicleMake
-                          {
-                              Id = a.Id,
-                              Name = a.Name,
-                              Abrv = a.Abrv
-                          }).ToListAsync();
-        }
 
-        //EDIT
-        //public VehicleMake EditVehicleMake(string id, VehicleMake VehicleMakeItem)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            int result = 0;
+
+            if (db != null)
+            {
+                //Find the id for  specific VehicleMake
+                var vehicleMake = await db.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (vehicleMake != null)
+                {
+                    //Delete that VehicleMake
+                    db.VehicleMakes.Remove(vehicleMake);
+
+                    //Commit the transaction
+                    result = await db.SaveChangesAsync();
+                }
+                return result;
+            }
+
+            return result;
+        }
+        //GET - VehicleModel
+        public async Task<VehicleViewModel> GetVehicleModel(int? Id)
+        {
+            if (db != null)
+            {
+                return await (from p in db.VehicleMakes
+                              from c in db.VehicleModels
+                              where p.Id == Id
+                              select new VehicleViewModel
+                              {
+                                  Id = p.Id,
+                                  Name = p.Name,
+                                  Abrv = p.Abrv
+
+                              }).FirstOrDefaultAsync();
+            }
+
+            return null;
+        }
     }
+
 }
+
+
+   
+

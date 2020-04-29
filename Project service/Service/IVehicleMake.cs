@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project_service.Interface
+namespace Project_service.Service
 {
     interface IVehicleMake
     {
