@@ -9,15 +9,15 @@ namespace Project_service.Service
     interface IVehicleMake
     {
 
-        public Task<VehicleMake> GetVehicleMake(int? id);
+        public Task<VehicleMake> GetVehicleMake(int id);
 
         public Task<List<VehicleMake>> GetVehicleMakes();
 
         public Task<bool> CreateVehicleMake(VehicleMake _vehicleMake);
 
-        public Task<int> EditVehicleMake(int? id);
+        public Task<int> EditVehicleMake(int id);
 
-        public Task<int> DeleteVehicleMake(int? id);
+        public Task<int> DeleteVehicleMake(int id);
 
     }
 }

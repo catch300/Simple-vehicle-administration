@@ -19,7 +19,7 @@ namespace Project_service.Service
         }
 
         //GET - VehicleMake
-        public async Task<VehicleMake> GetVehicleMake(int? id )
+        public async Task<VehicleMake> GetVehicleMake(int id )
         {
             if (db != null)
             {
@@ -89,7 +89,7 @@ namespace Project_service.Service
         }
 
         //UPDATE - VehicleMake
-        public async Task<int> EditVehicleMake(int? id)
+        public async Task<int> EditVehicleMake(int id)
         {
             int result = 0;
 
@@ -113,7 +113,7 @@ namespace Project_service.Service
         }
 
         //DELETE - VehicleMake
-        public async Task<int> DeleteVehicleMake(int? id)
+        public async Task<int> DeleteVehicleMake(int id)
         {
 
             int result = 0;
@@ -140,7 +140,7 @@ namespace Project_service.Service
 
 
         //GET - VehicleModel
-        public async Task<VehicleViewModel> GetVehicleModel(int? Id)
+        public async Task<VehicleViewModel> GetVehicleModel(int Id)
         {
             if (db != null)
             {
@@ -215,7 +215,7 @@ namespace Project_service.Service
         }
 
         //UPDATE - VehicleModel
-        public async Task<int> EditVehicleModel(int? id)
+        public async Task<int> EditVehicleModel(int id)
         {
             int result = 0;
 
@@ -239,7 +239,7 @@ namespace Project_service.Service
         }
 
         //DELETE - VehicleModel
-        public async Task<int> DeleteVehicleModel(int? id)
+        public async Task<int> DeleteVehicleModel(int id)
         {
 
             int result = 0;

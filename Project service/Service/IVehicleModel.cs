@@ -9,14 +9,14 @@ namespace Project_service.Service
 {
     interface IVehicleModel
     {
-        public Task<VehicleViewModel> GetVehicleModel(int? Id);
+        public Task<VehicleViewModel> GetVehicleModel(int Id);
 
         public Task<List<VehicleModel>> GetVehicleModels();
 
         public Task<bool> CreateVehicleModel(VehicleModel _vehicleModel);
 
-        public Task<int> EditVehicleModel(int? id);
+        public Task<int> EditVehicleModel(int id);
 
-        public Task<int> DeleteVehicleModel(int? id);
+        public Task<int> DeleteVehicleModel(int id);
     }
 }
