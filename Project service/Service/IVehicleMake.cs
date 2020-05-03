@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Project_service.Models;
 
 namespace Project_service.Service
 {
     interface IVehicleMake
     {
 
-        //public List<VehicleMake> GetVehicleMake( );
+        public Task<VehicleMake> GetVehicleMake(int? id);
 
-        //public VehicleMake AddVehicleMake(VehicleMake productItem);
+        public Task<List<VehicleMake>> GetVehicleMakes();
 
-        //public VehicleMake UpdateVehicleMake(string id, VehicleMake VehicleMakeItem);
+        public Task<bool> CreateVehicleMake(VehicleMake _vehicleMake);
 
-        //public string DeleteVehicleMake(string id);
+        public Task<int> EditVehicleMake(int? id);
+
+        public Task<int> DeleteVehicleMake(int? id);
 
     }
 }
