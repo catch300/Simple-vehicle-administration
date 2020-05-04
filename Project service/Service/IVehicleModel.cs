@@ -7,16 +7,16 @@ using Project_service.ViewModels;
 
 namespace Project_service.Service
 {
-    interface IVehicleModel
+    public interface IVehicleModel
     {
-        public Task<VehicleViewModel> GetVehicleModel(int Id);
+        public Task<VehicleModel> GetVehicleModel(int Id);
 
         public Task<List<VehicleModel>> GetVehicleModels();
 
-        public Task<bool> CreateVehicleModel(VehicleModel _vehicleModel);
+        public Task<VehicleModel> CreateVehicleModel(VehicleModel _vehicleModel);
 
-        public Task<int> EditVehicleModel(int id);
+        public Task<VehicleModel> EditVehicleModel(VehicleModel _vehicleModel);
 
-        public Task<int> DeleteVehicleModel(int id);
+        public Task<VehicleModel> DeleteVehicleModel(int id);
     }
 }

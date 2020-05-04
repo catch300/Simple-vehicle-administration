@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Project_service.Models;
 
 namespace Project_service.ViewModels
 {
     public class VehicleViewModel
     {
-        public int Id { get; set; }
+        public  VehicleMake VehicleMake { get; set; }
 
-        public string Name { get; set; }
-
-        public string Abrv { get; set; }
+        public IEnumerable<VehicleModel> VehicleModel { get; set; }
+        
     }
 }

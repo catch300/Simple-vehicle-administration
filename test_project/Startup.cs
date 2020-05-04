@@ -10,25 +10,34 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
+using Project_service.Service;
+
 
 namespace test_project
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        
+       
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             
             services.AddControllersWithViews();
+
             services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+
+            services.AddScoped<IVehicleMake, VehicleMakeService>();
+            services.AddScoped<IVehicleModel, VehicleModelService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

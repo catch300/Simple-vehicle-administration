@@ -6,18 +6,18 @@ using Project_service.Models;
 
 namespace Project_service.Service
 {
-    interface IVehicleMake
+   public interface IVehicleMake
     {
 
         public Task<VehicleMake> GetVehicleMake(int id);
 
         public Task<List<VehicleMake>> GetVehicleMakes();
 
-        public Task<bool> CreateVehicleMake(VehicleMake _vehicleMake);
+        public Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
 
-        public Task<int> EditVehicleMake(int id);
+        public Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake);
 
-        public Task<int> DeleteVehicleMake(int id);
+        public Task<VehicleMake> DeleteVehicleMake(int id);
 
     }
 }
