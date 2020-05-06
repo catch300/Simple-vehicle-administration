@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using cloudscribe.Pagination.Models;
 using Project_service.Models;
 
 namespace Project_service.Service
 {
    public interface IVehicleMake
     {
+        IEnumerable<VehicleMake> SortVehicleMakes(IEnumerable<VehicleMake> _vehiclemake);
+        IEnumerable<VehicleMake> SearcVehicleMakes(string SearchString);
 
-        public Task<VehicleMake> GetVehicleMake(int id);
+        Task<PagedResult<VehicleMake>> Paging(int pageNumber, int pageSize);
 
-        public Task<List<VehicleMake>> GetVehicleMakes();
+        Task<VehicleMake> GetVehicleMake(int id);
 
-        public Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
+        Task<List<VehicleMake>> GetVehicleMakes();
 
-        public Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake);
+        Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
 
-        public Task<VehicleMake> DeleteVehicleMake(int id);
+        Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake);
+
+        Task<VehicleMake> DeleteVehicleMake(int id);
 
     }
 }

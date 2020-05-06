@@ -20,45 +20,40 @@ namespace Project_service.Service
             db = _db;
         }
 
-        public PagedResult<VehicleModel> SortFilterPage(int pageNumber, int pageSize, string sortOrder, string filter)
+        public IEnumerable<VehicleModel> SortVehicleMakes(IEnumerable<VehicleModel> _vehiclemodel)
+        {
+            return _vehiclemodel.OrderBy(x => x.Name);
+        }
+
+        //FILTERING
+        public IEnumerable<VehicleModel> SearcVehicleMakes(string SearchString)
+        {
+            return db.VehicleModels.Where(x => x.Name.Contains(SearchString));
+        }
+
+
+        //PAGING
+        public async Task<PagedResult<VehicleModel>> Paging(int pageNumber, int pageSize)
         {
 
             int Exclude = (pageSize * pageNumber) - pageSize;
             var VehicleModel = from b in db.VehicleModels select b;
 
-            var VehicleModelCount = VehicleModel.Count();
+            var VehicleModelCount = VehicleModel.CountAsync();
 
-            //FILTER by name
-            if (!String.IsNullOrEmpty(filter))
-            {
-                VehicleModel = VehicleModel.Where(b => b.Name.Contains(filter));
-                VehicleModelCount = VehicleModel.Count();
-            }
-
-            //SORTING by name
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    VehicleModel = VehicleModel.OrderByDescending(b => b.Name);
-                    break;
-                    case "name_asc":
-                    VehicleModel = VehicleModel.OrderBy(b => b.Name);
-                    break;
-                
-            }
-
-            VehicleModel = VehicleModel.Skip(Exclude).Take(pageSize);
 
             //PAGINATION
             var result = new PagedResult<VehicleModel>
             {
-                Data = db.VehicleModels.AsNoTracking().ToList(),
-                TotalItems = VehicleModelCount,
+                Data = await db.VehicleModels.AsNoTracking().ToListAsync(),
+                TotalItems = await VehicleModelCount,
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
             return result;
         }
+
+        
 
 
         //GET - VehicleModel

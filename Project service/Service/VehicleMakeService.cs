@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
 using System.Data.Entity;
-using Project_service.ViewModels;
 using cloudscribe.Pagination.Models;
 
 namespace Project_service.Service
@@ -19,46 +18,38 @@ namespace Project_service.Service
             db = _db;
         }
 
-        //SORTING, FILTERING, PAGING
-        public PagedResult<VehicleMake> SortFilterPage(int pageNumber, int pageSize, string sortOrder, string filter)
+        //SORTING
+        public IEnumerable<VehicleMake> SortVehicleMakes(IEnumerable<VehicleMake> _vehiclemake)
+        {
+            return _vehiclemake.OrderBy(x => x.Name);
+        }
+
+        //FILTERING
+        public IEnumerable<VehicleMake> SearcVehicleMakes(string SearchString)
+        {
+            return db.VehicleMakes.Where(x => x.Name.Contains(SearchString));
+        }
+
+
+        //PAGING
+        public async Task<PagedResult<VehicleMake>> Paging(int pageNumber, int pageSize)
         {
             
             int Exclude = (pageSize * pageNumber) - pageSize;
             var VehicleMake = from b in db.VehicleMakes select b;
 
-            var VehicleMakeCount = VehicleMake.Count();
+            var VehicleMakeCount = VehicleMake.CountAsync();
             
-            //FILTER by name
-            if (!String.IsNullOrEmpty(filter))
-            {
-                VehicleMake = VehicleMake.Where(b => b.Name.Contains(filter));
-                VehicleMakeCount = VehicleMake.Count();
-            }
-
-            //SORTING by name
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    VehicleMake = VehicleMake.OrderByDescending(b => b.Name);
-                    break;
-                default:
-                case "name_asc":
-                    VehicleMake = VehicleMake.OrderBy(b => b.Name);
-                    break;
-
-            }
-
-            VehicleMake = VehicleMake.Skip(Exclude).Take(pageSize);
-
+            
             //PAGINATION
-            var result = new PagedResult<VehicleMake>
+            var result = new   PagedResult<VehicleMake>
             {
-                Data = db.VehicleMakes.AsNoTracking().ToList(),
-                TotalItems = VehicleMakeCount,
+                Data = await db.VehicleMakes.AsNoTracking().ToListAsync(),
+                TotalItems =await VehicleMakeCount,
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
-            return result;
+            return  result;
         }
 
 
@@ -121,8 +112,6 @@ namespace Project_service.Service
 
            
         }
-
-
 
         
     }
