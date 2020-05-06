@@ -36,17 +36,12 @@ namespace Project_service.Service
         public async Task<PagedResult<VehicleModel>> Paging(int pageNumber, int pageSize)
         {
 
-            int Exclude = (pageSize * pageNumber) - pageSize;
-            var VehicleModel = from b in db.VehicleModels select b;
-
-            var VehicleModelCount = VehicleModel.CountAsync();
-
 
             //PAGINATION
             var result = new PagedResult<VehicleModel>
             {
                 Data = await db.VehicleModels.AsNoTracking().ToListAsync(),
-                TotalItems = await VehicleModelCount,
+                TotalItems = await db.VehicleModels.CountAsync(),
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
