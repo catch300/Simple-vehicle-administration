@@ -6,23 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Models;
+using Project_service.Service;
 
 namespace test_project.Controllers
 {
     public class VehicleModelController : Controller
     {
         private readonly VehicleContext _context;
+        private readonly IVehicleModel _vehicleModel;
 
-        public VehicleModelController(VehicleContext context)
+        public VehicleModelController(VehicleContext context, IVehicleModel vehicleModel)
         {
             _context = context;
+            _vehicleModel = vehicleModel;
         }
 
         // GET: VehicleModel
         public async Task<IActionResult> Index()
         {
-            var vehicleContext = _context.VehicleModels.Include(v => v.Make);
-            return View(await vehicleContext.ToListAsync());
+            var vehicleContext = _vehicleModel.GetVehicleModels();
+            return View(await vehicleContext);
         }
 
         // GET: VehicleModel/Details/5
@@ -33,9 +36,7 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _context.VehicleModels
-                .Include(v => v.Make)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -47,7 +48,7 @@ namespace test_project.Controllers
         // GET: VehicleModel/Create
         public IActionResult Create()
         {
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Abrv");
+            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name");
             return View();
         }
 
@@ -60,11 +61,11 @@ namespace test_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vehicleModel);
-                await _context.SaveChangesAsync();
+                await _vehicleModel.CreateVehicleModel(vehicleModel);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Abrv", vehicleModel.MakeId);
+            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModel.MakeId);
             return View(vehicleModel);
         }
 
@@ -76,12 +77,12 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _context.VehicleModels.FindAsync(id);
+            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
             if (vehicleModel == null)
             {
                 return NotFound();
             }
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Abrv", vehicleModel.MakeId);
+            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModel.MakeId);
             return View(vehicleModel);
         }
 
@@ -101,8 +102,7 @@ namespace test_project.Controllers
             {
                 try
                 {
-                    _context.Update(vehicleModel);
-                    await _context.SaveChangesAsync();
+                    await _vehicleModel.EditVehicleModel(vehicleModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +117,7 @@ namespace test_project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Abrv", vehicleModel.MakeId);
+            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModel.MakeId);
             return View(vehicleModel);
         }
 
@@ -129,9 +129,7 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _context.VehicleModels
-                .Include(v => v.Make)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -145,9 +143,7 @@ namespace test_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vehicleModel = await _context.VehicleModels.FindAsync(id);
-            _context.VehicleModels.Remove(vehicleModel);
-            await _context.SaveChangesAsync();
+            await _vehicleModel.DeleteVehicleModel(id);
             return RedirectToAction(nameof(Index));
         }
 
