@@ -14,11 +14,11 @@ namespace Project_service.Service
 
         Task<PagedResult<VehicleMake>> Paging(int pageNumber, int pageSize);
 
-        Task<VehicleMake> GetVehicleMake(int id);
+        Task<VehicleMake> GetVehicleMake(int? id);
 
         Task<List<VehicleMake>> GetVehicleMakes();
 
-        Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
+       public Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
 
         Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake);
 

@@ -4,7 +4,7 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using cloudscribe.Pagination.Models;
 
 
@@ -52,11 +52,14 @@ namespace Project_service.Service
 
 
         //GET - VehicleModel
-        public async Task<VehicleModel> GetVehicleModel(int Id)
+        public async Task<VehicleModel> GetVehicleModel(int? Id)
         {
+            var vehicleModel = await db.VehicleModels
+               .Include(v => v.Make)
+               .FirstOrDefaultAsync(m => m.Id == Id);
             if (db != null)
             {
-                return await db.VehicleModels.FindAsync(Id);
+                return  vehicleModel;
             }
 
             return null;
@@ -67,6 +70,7 @@ namespace Project_service.Service
         {
             if (db != null)
             {
+                var vehicleContext = db.VehicleModels.Include(v => v.Make);
                 return await db.VehicleModels.ToListAsync();
 
             }

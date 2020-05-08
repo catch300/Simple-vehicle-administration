@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using cloudscribe.Pagination.Models;
 using Project_service.Models;
-using Project_service.ViewModels;
 
 namespace Project_service.Service
 {
@@ -16,7 +15,7 @@ namespace Project_service.Service
 
         Task<PagedResult<VehicleModel>> Paging(int pageNumber, int pageSize);
 
-        public Task<VehicleModel> GetVehicleModel(int Id);
+        public Task<VehicleModel> GetVehicleModel(int? Id);
 
         public Task<List<VehicleModel>> GetVehicleModels();
 

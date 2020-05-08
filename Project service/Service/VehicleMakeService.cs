@@ -4,7 +4,7 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using cloudscribe.Pagination.Models;
 
 namespace Project_service.Service
@@ -35,17 +35,12 @@ namespace Project_service.Service
         public async Task<PagedResult<VehicleMake>> Paging(int pageNumber, int pageSize)
         {
             
-            int Exclude = (pageSize * pageNumber) - pageSize;
-            var VehicleMake = from b in db.VehicleMakes select b;
 
-            var VehicleMakeCount = VehicleMake.CountAsync();
-            
-            
             //PAGINATION
             var result = new   PagedResult<VehicleMake>
             {
                 Data = await db.VehicleMakes.AsNoTracking().ToListAsync(),
-                TotalItems =await VehicleMakeCount,
+                TotalItems =await db.VehicleMakes.CountAsync(),
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
@@ -54,7 +49,7 @@ namespace Project_service.Service
 
 
         //GET - VehicleMake
-        public async Task<VehicleMake> GetVehicleMake(int id )
+        public async Task<VehicleMake> GetVehicleMake(int? id )
         {
             if (db != null)
             {
@@ -86,7 +81,6 @@ namespace Project_service.Service
             await db.SaveChangesAsync();
             return _vehicleMake;
 
-          
         }
 
         //UPDATE - VehicleMake
