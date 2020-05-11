@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
-using cloudscribe.Pagination.Models;
+using Project_service.Paging;
 
 namespace Project_service.Service
 {
@@ -18,35 +18,7 @@ namespace Project_service.Service
             db = _db;
         }
 
-        //SORTING
-        public IEnumerable<VehicleMake> SortVehicleMakes(IEnumerable<VehicleMake> _vehiclemake)
-        {
-            return _vehiclemake.OrderBy(x => x.Name);
-        }
-
-        //FILTERING
-        public IEnumerable<VehicleMake> SearcVehicleMakes(string SearchString)
-        {
-            return db.VehicleMakes.Where(x => x.Name.Contains(SearchString));
-        }
-
-
-        //PAGING
-        public async Task<PagedResult<VehicleMake>> Paging(int pageNumber, int pageSize)
-        {
-            
-
-            //PAGINATION
-            var result = new   PagedResult<VehicleMake>
-            {
-                Data = await db.VehicleMakes.AsNoTracking().ToListAsync(),
-                TotalItems =await db.VehicleMakes.CountAsync(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-            return  result;
-        }
-
+       
 
         //GET - VehicleMake
         public async Task<VehicleMake> GetVehicleMake(int? id )
@@ -61,15 +33,46 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<List<VehicleMake>> GetVehicleMakes()
+        public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(string sortOrder, string currentFilter, string searchString, int? page )
         {
-            if (db != null)
+
+          
+
+            if (searchString != null)
             {
-                return await db.VehicleMakes.ToListAsync();
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+
+            var vehicleMake = from v in db.VehicleMakes
+                              select v;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(searchString)
+                                                || v.Abrv.Contains(searchString));
+                
                 
             }
-                return null;
-                 
+
+            vehicleMake = sortOrder switch
+            {
+                "name_desc" => vehicleMake.OrderByDescending(x => x.Name),
+                "abrv_desc" => vehicleMake.OrderByDescending(x => x.Abrv),
+                "abrv_asc" => vehicleMake.OrderBy(x => x.Abrv),
+                _ => vehicleMake.OrderBy(x => x.Name),
+            };
+
+            int pageSize = 3;
+            return await PaginatedList<VehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
+
+
+
         }
 
        

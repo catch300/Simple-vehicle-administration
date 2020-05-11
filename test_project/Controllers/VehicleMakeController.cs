@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Models;
 using Project_service.Service;
-
 
 namespace test_project.Controllers
 {
@@ -23,10 +24,17 @@ namespace test_project.Controllers
     }
 
         // GET: VehicleMake
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var VehicleMakes = await _vehicleMake.GetVehicleMakes();
-            return View( VehicleMakes);
+           
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.sortByName = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.sortByAbrv = sortOrder=="abrv_desc" ? "abrv_desc" : "abrv_asc";
+
+            ViewBag.CurrentFilter = searchString;
+
+            var vehicleMakes = await _vehicleMake.GetVehicleMakes(sortOrder,currentFilter,searchString,page);
+            return View(vehicleMakes);
         }
 
         // GET: VehicleMake/Details/5

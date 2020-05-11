@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
-using cloudscribe.Pagination.Models;
 
 
 
@@ -20,36 +19,7 @@ namespace Project_service.Service
             db = _db;
         }
 
-        public IEnumerable<VehicleModel> SortVehicleMakes(IEnumerable<VehicleModel> _vehiclemodel)
-        {
-            return _vehiclemodel.OrderBy(x => x.Name);
-        }
-
-        //FILTERING
-        public IEnumerable<VehicleModel> SearcVehicleMakes(string SearchString)
-        {
-            return db.VehicleModels.Where(x => x.Name.Contains(SearchString));
-        }
-
-
-        //PAGING
-        public async Task<PagedResult<VehicleModel>> Paging(int pageNumber, int pageSize)
-        {
-
-
-            //PAGINATION
-            var result = new PagedResult<VehicleModel>
-            {
-                Data = await db.VehicleModels.AsNoTracking().ToListAsync(),
-                TotalItems = await db.VehicleModels.CountAsync(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-            return result;
-        }
-
-        
-
+      
 
         //GET - VehicleModel
         public async Task<VehicleModel> GetVehicleModel(int? Id)

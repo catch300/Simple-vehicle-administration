@@ -32,6 +32,7 @@ namespace test_project
         {
             
             services.AddControllersWithViews();
+            services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
 
             services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));

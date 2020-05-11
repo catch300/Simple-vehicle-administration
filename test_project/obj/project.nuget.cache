@@ -1,11 +1,9 @@
 {
   "version": 2,
-  "dgSpecHash": "+W/6whY1tdpILHYtx1E43CcAOBncsvfbCi7I3dyeT32bLBidCI0vQEjC95uVjjAH7o/KDKC9ZkcbqtrY4hg9Vw==",
+  "dgSpecHash": "BLctafGSvf7L0WawhoBkzQi4MRIG8GDuaDOQn3B6KpTgrLE/zUgE1yl0z2DAgYEST9boF+W1AHjJWEj6CpA6bQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\catch\\Documents\\Visual Studio 2019 - Projekti\\test_project\\test_project\\test_project.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\catch\\.nuget\\packages\\cloudscribe.pagination.models\\1.0.5\\cloudscribe.pagination.models.1.0.5.nupkg.sha512",
-    "C:\\Users\\catch\\.nuget\\packages\\cloudscribe.web.pagination\\3.0.0\\cloudscribe.web.pagination.3.0.0.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\entityframework\\6.4.0\\entityframework.6.4.0.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
@@ -121,7 +119,6 @@
     "C:\\Users\\catch\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
-    "C:\\Users\\catch\\.nuget\\packages\\system.linq.queryable\\4.3.0\\system.linq.queryable.4.3.0.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
     "C:\\Users\\catch\\.nuget\\packages\\system.net.nameresolution\\4.3.0\\system.net.nameresolution.4.3.0.nupkg.sha512",
