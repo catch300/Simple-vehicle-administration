@@ -22,10 +22,18 @@ namespace test_project.Controllers
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var vehicleContext = _vehicleModel.GetVehicleModels();
-            return View(await vehicleContext);
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.sortByMake = sortOrder == "make_desc" ? "make_asc" : "make_desc";
+            ViewBag.sortByName = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.sortByAbrv = sortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
+
+
+            ViewBag.CurrentFilter = searchString;
+
+            var vehicleModels = await _vehicleModel.GetVehicleModels(sortOrder, currentFilter, searchString, page);
+            return View(vehicleModels);
         }
 
         // GET: VehicleModel/Details/5

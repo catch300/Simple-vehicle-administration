@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Project_service.Models;
+using Project_service.Paging;
 
 namespace Project_service.Service
 {
@@ -10,14 +11,14 @@ namespace Project_service.Service
     {
 
       
-        public Task<VehicleModel> GetVehicleModel(int? Id);
+        Task<VehicleModel> GetVehicleModel(int? Id);
 
-        public Task<List<VehicleModel>> GetVehicleModels();
+        Task<PaginatedList<VehicleModel>> GetVehicleModels(string sortOrder, string currentFilter, string searchString, int? page);
 
-        public Task<VehicleModel> CreateVehicleModel(VehicleModel _vehicleModel);
+        Task<VehicleModel> CreateVehicleModel(VehicleModel _vehicleModel);
 
-        public Task<VehicleModel> EditVehicleModel(VehicleModel _vehicleModel);
+        Task<VehicleModel> EditVehicleModel(VehicleModel _vehicleModel);
 
-        public Task<VehicleModel> DeleteVehicleModel(int id);
+        Task<VehicleModel> DeleteVehicleModel(int id);
     }
 }

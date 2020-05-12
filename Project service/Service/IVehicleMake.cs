@@ -15,7 +15,7 @@ namespace Project_service.Service
 
         Task<PaginatedList<VehicleMake>> GetVehicleMakes(string sortOrder, string currentFilter, string searchString, int? page);
 
-       public Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
+        Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
 
         Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake);
 

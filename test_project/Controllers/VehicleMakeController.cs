@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Models;
 using Project_service.Service;
+using AutoMapper;
+using test_project.Models.ViewModels;
+using Project_service.Paging;
 
 namespace test_project.Controllers
 {
@@ -16,11 +19,13 @@ namespace test_project.Controllers
     {
         private readonly VehicleContext _context;
         private readonly IVehicleMake _vehicleMake;
+        private readonly IMapper _mapper;
 
-        public VehicleMakeController(VehicleContext context, IVehicleMake vehiclemake)
+        public VehicleMakeController(VehicleContext context, IVehicleMake vehiclemake, IMapper mapper)
         {
             _context = context;
             _vehicleMake = vehiclemake;
+            _mapper = mapper;
     }
 
         // GET: VehicleMake
@@ -29,12 +34,15 @@ namespace test_project.Controllers
            
             ViewBag.CurrentSort = sortOrder;
             ViewBag.sortByName = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.sortByAbrv = sortOrder=="abrv_desc" ? "abrv_desc" : "abrv_asc";
+            ViewBag.sortByAbrv = sortOrder== "abrv_desc" ? "abrv_asc" : "abrv_desc";
 
             ViewBag.CurrentFilter = searchString;
 
             var vehicleMakes = await _vehicleMake.GetVehicleMakes(sortOrder,currentFilter,searchString,page);
-            return View(vehicleMakes);
+
+            var listOfVehicleMakes = _mapper.Map<PaginatedList<VehicleMake>, PaginatedList<VehicleMakeVM>>(vehicleMakes);
+
+            return View(listOfVehicleMakes);
         }
 
         // GET: VehicleMake/Details/5

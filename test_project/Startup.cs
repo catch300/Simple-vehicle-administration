@@ -11,7 +11,11 @@ using Microsoft.Extensions.Hosting;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Service;
-
+using AutoMapper;
+using test_project.MappingProfiles;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using test_project.Models.ViewModels;
 
 namespace test_project
 {
@@ -24,21 +28,33 @@ namespace test_project
             Configuration = configuration;
         }
 
-        
-       
+
+        public IContainer ApplicationContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             
             services.AddControllersWithViews();
-            services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
+
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
-            services.AddScoped<IVehicleMake, VehicleMakeService>();
-            services.AddScoped<IVehicleModel, VehicleModelService>();
+            
+            //services.AddScoped<IVehicleMake, VehicleMakeService>();
+            //services.AddScoped<IVehicleModel, VehicleModelService>();
+
+            // Create the container builder.
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            builder.RegisterType<VehicleMake>().As<VehicleMakeVM>();
+            builder.RegisterType<VehicleModel>().As<VehicleModelVM>();
+            ApplicationContainer = builder.Build();
+
+            // Create the IServiceProvider based on the container.
+            return new AutofacServiceProvider(this.ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

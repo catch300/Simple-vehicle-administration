@@ -36,7 +36,8 @@ namespace Project_service.Service
         public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(string sortOrder, string currentFilter, string searchString, int? page )
         {
 
-          
+            var vehicleMake = from v in db.VehicleMakes
+                              select v;
 
             if (searchString != null)
             {
@@ -48,16 +49,13 @@ namespace Project_service.Service
             }
 
 
-            var vehicleMake = from v in db.VehicleMakes
-                              select v;
+            
 
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 vehicleMake = vehicleMake.Where(v=> v.Name.Contains(searchString)
                                                 || v.Abrv.Contains(searchString));
-                
-                
             }
 
             vehicleMake = sortOrder switch

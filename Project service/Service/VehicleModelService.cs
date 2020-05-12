@@ -5,8 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
-
-
+using Project_service.Paging;
 
 namespace Project_service.Service
 {
@@ -36,15 +35,37 @@ namespace Project_service.Service
         }
 
         //GETALL - VehicleModels
-        public async Task<List<VehicleModel>> GetVehicleModels( )
+        public async Task<PaginatedList<VehicleModel>> GetVehicleModels(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            if (db != null)
+            var vehicleModel = from v in db.VehicleModels.Include(v => v.Make)
+                                 select v;
+            
+            if (searchString != null)
             {
-                var vehicleContext = db.VehicleModels.Include(v => v.Make);
-                return await db.VehicleModels.ToListAsync();
-
+                page = 1;
             }
-            return null;
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vehicleModel = vehicleModel.Where(v => v.Make.Name.Contains(searchString));
+            }
+
+            vehicleModel = sortOrder switch
+            {
+                "name_desc" => vehicleModel.OrderByDescending(x => x.Name),
+                "abrv_desc" => vehicleModel.OrderByDescending(x => x.Abrv),
+                "abrv_asc" => vehicleModel.OrderBy(x => x.Abrv),
+                "make_asc" => vehicleModel.OrderBy(x => x.Make),
+                "make_desc" => vehicleModel.OrderByDescending(x => x.Make),
+                _ => vehicleModel.OrderBy(x => x.Name),
+            };
+
+            int pageSize = 3;
+            return await PaginatedList<VehicleModel>.CreateAsync(vehicleModel.AsNoTracking(), page ?? 1, pageSize);
 
         }
 
