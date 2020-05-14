@@ -11,7 +11,7 @@ using Project_service.Models;
 using Project_service.Service;
 using AutoMapper;
 using test_project.Models.ViewModels;
-using Project_service.Paging;
+using Project_service.PagingFIlteringSorting;
 
 namespace test_project.Controllers
 {
@@ -29,20 +29,20 @@ namespace test_project.Controllers
     }
 
         // GET: VehicleMake
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public async Task<IActionResult> Index(Sorting sort, Filtering filter,  int? page)
         {
            
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.sortByName = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.sortByAbrv = sortOrder== "abrv_desc" ? "abrv_asc" : "abrv_desc";
+            ViewBag.CurrentSort = sort.SortOrder;
+            ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
+            ViewBag.sortByAbrv = sort.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
 
-            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentFilter = filter.SearchString;
+            var vehicleMakes = await _vehicleMake.GetVehicleMakes(sort,filter, page);
 
-            var vehicleMakes = await _vehicleMake.GetVehicleMakes(sortOrder,currentFilter,searchString,page);
+           
+            //var listOfVehicleMakes = _mapper.Map<List<VehicleMake>, List<VehicleMakeVM>>(vehicleMakes);
 
-            var listOfVehicleMakes = _mapper.Map<PaginatedList<VehicleMake>, PaginatedList<VehicleMakeVM>>(vehicleMakes);
-
-            return View(listOfVehicleMakes);
+            return View(vehicleMakes);
         }
 
         // GET: VehicleMake/Details/5

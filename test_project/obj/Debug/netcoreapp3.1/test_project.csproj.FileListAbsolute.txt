@@ -178,5 +178,6 @@ C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Autofac.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\Autofac.Extensions.DependencyInjection.dll
+C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\bin\Debug\netcoreapp3.1\AutoMapper.Contrib.Autofac.DependencyInjection.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.csproj.CoreCompileInputs.cache
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\test_project\obj\Debug\netcoreapp3.1\test_project.MvcApplicationPartsAssemblyInfo.cache

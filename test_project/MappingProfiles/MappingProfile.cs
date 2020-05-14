@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Project_service.Models;
 using test_project.Models.ViewModels;
-using Project_service.Paging;
+using Project_service.PagingFIlteringSorting;
 
 
 namespace test_project.MappingProfiles
@@ -16,6 +16,8 @@ namespace test_project.MappingProfiles
         {
             CreateMap<PaginatedList<VehicleMake>, PaginatedList<VehicleMakeVM>>().ReverseMap();
             CreateMap<PaginatedList<VehicleModel>, PaginatedList<VehicleModelVM>>().ReverseMap();
+
+           
         }
 
 

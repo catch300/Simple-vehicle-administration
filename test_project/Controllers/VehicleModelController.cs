@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Models;
+using Project_service.PagingFIlteringSorting;
 using Project_service.Service;
+using test_project.Models.ViewModels;
 
 namespace test_project.Controllers
 {
@@ -14,25 +17,30 @@ namespace test_project.Controllers
     {
         private readonly VehicleContext _context;
         private readonly IVehicleModel _vehicleModel;
+        private readonly IMapper _mapper;
 
-        public VehicleModelController(VehicleContext context, IVehicleModel vehicleModel)
+        public VehicleModelController(VehicleContext context, IVehicleModel vehicleModel, IMapper mapper)
         {
             _context = context;
             _vehicleModel = vehicleModel;
+            _mapper = mapper;
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public async Task<IActionResult> Index(Sorting sort, Filtering filter,  int? page)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.sortByMake = sortOrder == "make_desc" ? "make_asc" : "make_desc";
-            ViewBag.sortByName = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.sortByAbrv = sortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
+            ViewBag.CurrentSort = sort.SortOrder;
+            ViewBag.sortByMake = sort.SortOrder == "make_desc" ? "make_asc" : "make_desc";
+            ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
+            ViewBag.sortByAbrv = sort.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
 
 
-            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentFilter = filter.SearchString;
 
-            var vehicleModels = await _vehicleModel.GetVehicleModels(sortOrder, currentFilter, searchString, page);
+            var vehicleModels = await _vehicleModel.GetVehicleModels(sort, filter, page);
+
+            //var listOfVehicleModels = _mapper.Map<VehicleModelVM>(vehicleModels);
+
             return View(vehicleModels);
         }
 

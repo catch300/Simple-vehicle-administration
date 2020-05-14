@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Project_service.Models;
-using Project_service.Paging;
+using Project_service.PagingFIlteringSorting;
 
 namespace Project_service.Service
 {
@@ -13,7 +13,7 @@ namespace Project_service.Service
       
         Task<VehicleModel> GetVehicleModel(int? Id);
 
-        Task<PaginatedList<VehicleModel>> GetVehicleModels(string sortOrder, string currentFilter, string searchString, int? page);
+        Task<PaginatedList<VehicleModel>> GetVehicleModels(Sorting sort, Filtering filter,  int? page);
 
         Task<VehicleModel> CreateVehicleModel(VehicleModel _vehicleModel);
 

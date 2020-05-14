@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
-using Project_service.Paging;
+using Project_service.PagingFIlteringSorting;
 
 namespace Project_service.Service
 {
@@ -33,32 +33,29 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(string sortOrder, string currentFilter, string searchString, int? page )
+        public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter,  int? page)
         {
 
             var vehicleMake = from v in db.VehicleMakes
                               select v;
 
-            if (searchString != null)
+            if (filter.SearchString != null)
             {
                 page = 1;
             }
             else
             {
-                searchString = currentFilter;
+                filter.SearchString = filter.CurrentFilter;
             }
-
-
             
 
-
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(filter.SearchString))
             {
-                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(searchString)
-                                                || v.Abrv.Contains(searchString));
+                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(filter.SearchString)
+                                                || v.Abrv.Contains(filter.SearchString));
             }
 
-            vehicleMake = sortOrder switch
+            vehicleMake = sort.SortOrder switch
             {
                 "name_desc" => vehicleMake.OrderByDescending(x => x.Name),
                 "abrv_desc" => vehicleMake.OrderByDescending(x => x.Abrv),
@@ -67,6 +64,8 @@ namespace Project_service.Service
             };
 
             int pageSize = 3;
+           // return await vehicleMake.ToListAsync();//Skip((paging.PageIndex - 1) * paging.PageSize).Take(paging.PageSize).ToListAsync();
+
             return await PaginatedList<VehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
 
 

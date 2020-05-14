@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v3.1": {
       "test_project/1.0.0": {
         "dependencies": {
+          "AutoMapper.Contrib.Autofac.DependencyInjection": "3.1.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
           "Autofac": "5.2.0",
           "Autofac.Extensions.DependencyInjection": "6.0.0",
@@ -351,6 +352,21 @@
         },
         "compile": {
           "lib/netstandard2.0/AutoMapper.dll": {}
+        }
+      },
+      "AutoMapper.Contrib.Autofac.DependencyInjection/3.1.0": {
+        "dependencies": {
+          "AutoMapper": "9.0.0",
+          "Autofac": "5.2.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/AutoMapper.Contrib.Autofac.DependencyInjection.dll": {
+            "assemblyVersion": "3.1.0.0",
+            "fileVersion": "3.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/AutoMapper.Contrib.Autofac.DependencyInjection.dll": {}
         }
       },
       "AutoMapper.Extensions.Microsoft.DependencyInjection/7.0.0": {
@@ -4103,6 +4119,13 @@
       "sha512": "sha512-xCqvoxT4HIrNY/xlXG9W+BA/awdrhWvMTKTK/igkGSRbhOhpl3Q8O8Gxlhzjc9JsYqE7sS6AxgyuUUvZ6R5/Bw==",
       "path": "automapper/9.0.0",
       "hashPath": "automapper.9.0.0.nupkg.sha512"
+    },
+    "AutoMapper.Contrib.Autofac.DependencyInjection/3.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iixg1nwhnLz7XJxFaCe2HEu9GZq2Sh7ss9YBCR1tllOk6IBBX2G4rHK7S2x6fuE0QeSQN3zHNjz2jYFcKc5bYA==",
+      "path": "automapper.contrib.autofac.dependencyinjection/3.1.0",
+      "hashPath": "automapper.contrib.autofac.dependencyinjection.3.1.0.nupkg.sha512"
     },
     "AutoMapper.Extensions.Microsoft.DependencyInjection/7.0.0": {
       "type": "package",

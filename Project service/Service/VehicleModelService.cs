@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
-using Project_service.Paging;
+using Project_service.PagingFIlteringSorting;
 
 namespace Project_service.Service
 {
@@ -35,26 +35,26 @@ namespace Project_service.Service
         }
 
         //GETALL - VehicleModels
-        public async Task<PaginatedList<VehicleModel>> GetVehicleModels(string sortOrder, string currentFilter, string searchString, int? page)
+        public async Task<PaginatedList<VehicleModel>> GetVehicleModels(Sorting sort, Filtering filter, int? page)
         {
             var vehicleModel = from v in db.VehicleModels.Include(v => v.Make)
                                  select v;
             
-            if (searchString != null)
+            if (filter.SearchString != null)
             {
                 page = 1;
             }
             else
             {
-                searchString = currentFilter;
+                filter.SearchString = filter.CurrentFilter;
             }
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(filter.SearchString))
             {
-                vehicleModel = vehicleModel.Where(v => v.Make.Name.Contains(searchString));
+                vehicleModel = vehicleModel.Where(v => v.Make.Name.Contains(filter.SearchString));
             }
 
-            vehicleModel = sortOrder switch
+            vehicleModel = sort.SortOrder switch
             {
                 "name_desc" => vehicleModel.OrderByDescending(x => x.Name),
                 "abrv_desc" => vehicleModel.OrderByDescending(x => x.Abrv),

@@ -14,14 +14,17 @@ using Project_service.Service;
 using AutoMapper;
 using test_project.MappingProfiles;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using test_project.Models.ViewModels;
+using AutoMapper.Contrib.Autofac.DependencyInjection;
+using Project_service.PagingFIlteringSorting;
 
 namespace test_project
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
+        
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -29,32 +32,37 @@ namespace test_project
         }
 
 
-        public IContainer ApplicationContainer { get; private set; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             
             services.AddControllersWithViews();
 
-            services.AddAutoMapper(typeof(MappingProfile));
+            
 
             services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
+          
+           
+        }
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<VehicleMake, VehicleMakeVM>();
+                cfg.CreateMap<VehicleModel, VehicleModelVM>();
+                cfg.AddProfile<MappingProfile>();
+                
+            });
+            configuration.CreateMapper();
+            builder.AddAutoMapper(typeof(AutoMapperModule).Assembly);
+            builder.RegisterType<VehicleMakeService>().As<IVehicleMake>();
+            builder.RegisterType<VehicleModelService>().As<IVehicleModel>();
             
-            //services.AddScoped<IVehicleMake, VehicleMakeService>();
-            //services.AddScoped<IVehicleModel, VehicleModelService>();
 
-            // Create the container builder.
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
-            builder.RegisterType<VehicleMake>().As<VehicleMakeVM>();
-            builder.RegisterType<VehicleModel>().As<VehicleModelVM>();
-            ApplicationContainer = builder.Build();
-
-            // Create the IServiceProvider based on the container.
-            return new AutofacServiceProvider(this.ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +91,14 @@ namespace test_project
                     name: "default",
                     pattern: "{controller=VehicleMake}/{action=Index}/{id?}");
             });
+
+            var builder = new ConfigurationBuilder()
+        .SetBasePath(env.ContentRootPath)
+        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+        .AddEnvironmentVariables();
+            Configuration = builder.Build();
+
         }
     }
 }
