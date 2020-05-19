@@ -10,23 +10,25 @@ namespace Project_service.PagingFIlteringSorting
     {
 
         
-        public int PageIndex { get; private set; }
+        public int? PageIndex { get;  set; }
         public int TotalPages { get; private set; }
-        public  int PageSize { get; private set; }
-
+        public  int PageSize { get;  set; }
+        public IEnumerable<T> Data { get ; set; }
+        public  new int Count { get; set; }
         public PaginatedList( )
         {
 
         }
+      
 
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+        public PaginatedList(IEnumerable<T> items, int count, int pageIndex, int pageSize)
         {
-            
+            Data = items;
             PageIndex = pageIndex;
             PageSize = pageSize;
+            Count = count;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-
-            AddRange(items);
+            AddRange(Data);
         }
 
         public bool HasPreviousPage

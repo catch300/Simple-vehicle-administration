@@ -9,6 +9,9 @@ namespace Project_service.Models
     [Table("VehicleMake")]
     public class VehicleMake 
     {
+        
+
+
         [Key]
         public int Id { get; set; }
 

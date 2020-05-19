@@ -14,10 +14,13 @@ namespace test_project.MappingProfiles
     {
         public MappingProfile( )
         {
-            CreateMap<PaginatedList<VehicleMake>, PaginatedList<VehicleMakeVM>>().ReverseMap();
-            CreateMap<PaginatedList<VehicleModel>, PaginatedList<VehicleModelVM>>().ReverseMap();
+            //CreateMap<VehicleMake, VehicleMakeVM>().ReverseMap();
+
+            CreateMap<VehicleMakeVM, VehicleMake>().ReverseMap();
+            CreateMap<VehicleModelVM, VehicleModel>().ReverseMap();
 
            
+
         }
 
 

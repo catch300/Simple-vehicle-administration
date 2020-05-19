@@ -3,7 +3,7 @@
 
 @using Project_service.Models;
 
-@model PaginatedList<VehicleMake>
+@model PaginatedList<VehicleMakeVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -47,10 +47,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(Modelitem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Abrv)
+                    @Html.DisplayFor(Modelitem => item.Abrv)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

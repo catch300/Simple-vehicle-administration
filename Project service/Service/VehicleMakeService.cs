@@ -48,13 +48,11 @@ namespace Project_service.Service
                 filter.SearchString = filter.CurrentFilter;
             }
             
-
             if (!string.IsNullOrEmpty(filter.SearchString))
             {
                 vehicleMake = vehicleMake.Where(v=> v.Name.Contains(filter.SearchString)
                                                 || v.Abrv.Contains(filter.SearchString));
             }
-
             vehicleMake = sort.SortOrder switch
             {
                 "name_desc" => vehicleMake.OrderByDescending(x => x.Name),
@@ -64,15 +62,8 @@ namespace Project_service.Service
             };
 
             int pageSize = 3;
-           // return await vehicleMake.ToListAsync();//Skip((paging.PageIndex - 1) * paging.PageSize).Take(paging.PageSize).ToListAsync();
-
-            return await PaginatedList<VehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
-
-
-
+           return  await PaginatedList<VehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
         }
-
-       
 
         //CREATE - VehicleMake
         public async Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake)
@@ -87,7 +78,8 @@ namespace Project_service.Service
         public async Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake)
         {
             var vehicleMake = db.VehicleMakes.Attach(_vehicleMake);
-            vehicleMake.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            vehicleMake.State = EntityState.Modified;
+            
            await db.SaveChangesAsync();
             return _vehicleMake;
         }

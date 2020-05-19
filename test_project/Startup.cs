@@ -44,24 +44,15 @@ namespace test_project
 
             services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
-
           
-           
+
+
         }
         public void ConfigureContainer(ContainerBuilder builder)
         {
-
-            var configuration = new MapperConfiguration(cfg => {
-                cfg.CreateMap<VehicleMake, VehicleMakeVM>();
-                cfg.CreateMap<VehicleModel, VehicleModelVM>();
-                cfg.AddProfile<MappingProfile>();
-                
-            });
-            configuration.CreateMapper();
-            builder.AddAutoMapper(typeof(AutoMapperModule).Assembly);
             builder.RegisterType<VehicleMakeService>().As<IVehicleMake>();
             builder.RegisterType<VehicleModelService>().As<IVehicleModel>();
-            
+            builder.AddAutoMapper(typeof(Startup).Assembly);
 
         }
 

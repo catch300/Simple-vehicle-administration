@@ -12,37 +12,48 @@ using Project_service.Service;
 using AutoMapper;
 using test_project.Models.ViewModels;
 using Project_service.PagingFIlteringSorting;
+using AutoMapper.QueryableExtensions;
 
 namespace test_project.Controllers
 {
     public class VehicleMakeController : Controller
     {
-        private readonly VehicleContext _context;
-        private readonly IVehicleMake _vehicleMake;
+        
+        private readonly IVehicleMake _vehicleMakeService;
         private readonly IMapper _mapper;
 
-        public VehicleMakeController(VehicleContext context, IVehicleMake vehiclemake, IMapper mapper)
+        public VehicleMakeController( IVehicleMake vehicleMakeService, IMapper mapper)
         {
-            _context = context;
-            _vehicleMake = vehiclemake;
+            _vehicleMakeService = vehicleMakeService;
             _mapper = mapper;
     }
 
         // GET: VehicleMake
         public async Task<IActionResult> Index(Sorting sort, Filtering filter,  int? page)
         {
-           
+            
             ViewBag.CurrentSort = sort.SortOrder;
             ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
             ViewBag.sortByAbrv = sort.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
 
             ViewBag.CurrentFilter = filter.SearchString;
-            var vehicleMakes = await _vehicleMake.GetVehicleMakes(sort,filter, page);
-
            
-            //var listOfVehicleMakes = _mapper.Map<List<VehicleMake>, List<VehicleMakeVM>>(vehicleMakes);
+            var ListOfvehicleMakes = await _vehicleMakeService.GetVehicleMakes(sort, filter, page);
 
-            return View(vehicleMakes);
+            var mapVehicleMake = _mapper.Map<List<VehicleMakeVM>>(ListOfvehicleMakes);
+            var count = ListOfvehicleMakes.Count;
+
+
+            var PageIndex = ListOfvehicleMakes.PageIndex ?? 1;
+            var PageSize = ListOfvehicleMakes.PageSize;
+            var vehiclemakes = new PaginatedList<VehicleMakeVM>(
+                                     mapVehicleMake,
+                                     count,
+                                     PageIndex,
+                                     PageSize);
+           
+
+            return View(vehiclemakes);
         }
 
         // GET: VehicleMake/Details/5
@@ -53,13 +64,12 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleMake = await _vehicleMake.GetVehicleMake(id);
+            var vehicleMake = await _vehicleMakeService.GetVehicleMake(id);
             if (vehicleMake == null)
             {
                 return NotFound();
             }
-
-            return View(vehicleMake);
+            return base.View(_mapper.Map<VehicleMakeVM>(vehicleMake));
         }
 
         // GET: VehicleMake/Create
@@ -68,21 +78,19 @@ namespace test_project.Controllers
             return View();
         }
 
-        // POST: VehicleMake/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
-        { 
-            
+        {
             if (ModelState.IsValid)
             {
-              await _vehicleMake.CreateVehicleMake(vehicleMake);
-               
+                 await _vehicleMakeService.CreateVehicleMake(vehicleMake);
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicleMake);
+            var vehicleMakeCreate = _mapper.Map<VehicleMakeVM>(vehicleMake);
+            return View(vehicleMakeCreate);
         }
 
         // GET: VehicleMake/Edit/5
@@ -93,12 +101,14 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleMake = await _vehicleMake.GetVehicleMake(id);
-            if (vehicleMake == null)
+            var vehicleMakeID = await _vehicleMakeService.GetVehicleMake(id);
+            
+            if (vehicleMakeID == null)
             {
                 return NotFound();
             }
-            return View(vehicleMake);
+            var vehicleMakeEdit = _mapper.Map<VehicleMakeVM>(vehicleMakeID);
+            return View(vehicleMakeEdit);
         }
 
         // POST: VehicleMake/Edit/5
@@ -108,6 +118,8 @@ namespace test_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
         {
+            var vehicleMakeID = await _vehicleMakeService.GetVehicleMake(id);
+            
             if (id != vehicleMake.Id)
             {
                 return NotFound();
@@ -115,25 +127,11 @@ namespace test_project.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    await _vehicleMake.EditVehicleMake(vehicleMake);
-
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehicleMakeExists(vehicleMake.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                  await _vehicleMakeService.EditVehicleMake(vehicleMake);
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicleMake);
+            var vehicleMakeEdit = _mapper.Map<VehicleMakeVM>(vehicleMakeID);
+            return View(vehicleMakeEdit);
         }
 
         // GET: VehicleMake/Delete/5
@@ -144,7 +142,7 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleMake = await _vehicleMake.GetVehicleMake(id);
+            var vehicleMake = await _vehicleMakeService.GetVehicleMake(id);
             if (vehicleMake == null)
             {
                 return NotFound();
@@ -158,13 +156,10 @@ namespace test_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-           await _vehicleMake.DeleteVehicleMake(id);
+           await _vehicleMakeService.DeleteVehicleMake(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VehicleMakeExists(int id)
-        {
-            return _context.VehicleMakes.Any(e => e.Id == id);
-        }
+       
     }
 }
