@@ -7,6 +7,7 @@ using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
 using Project_service.PagingFIlteringSorting;
 
+
 namespace Project_service.Service
 {
     public class VehicleMakeService : IVehicleMake
@@ -25,7 +26,7 @@ namespace Project_service.Service
         {
             if (db != null)
             {
-                return await db.VehicleMakes.FindAsync(id); 
+                return await db.VehicleMakes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);; 
             }
 
             return null;
@@ -79,8 +80,7 @@ namespace Project_service.Service
         {
             var vehicleMake = db.VehicleMakes.Attach(_vehicleMake);
             vehicleMake.State = EntityState.Modified;
-            
-           await db.SaveChangesAsync();
+            await db.SaveChangesAsync();
             return _vehicleMake;
         }
 

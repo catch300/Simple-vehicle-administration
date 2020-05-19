@@ -10,12 +10,7 @@ namespace test_project.Models.ViewModels
     public class  VehicleMakeVM
     {
 
-        public VehicleMakeVM(int id, string name, string abrv)
-        {
-            Id = id;
-            Name = name;
-            Abrv = abrv;
-        }
+       
 
         public int Id { get; set; }      
         public string Name { get; set; }

@@ -40,14 +40,12 @@ namespace test_project
             
             services.AddControllersWithViews();
 
-            
-
             services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
-          
-
 
         }
+
+        //Container Builder for Autofac 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterType<VehicleMakeService>().As<IVehicleMake>();
@@ -84,10 +82,10 @@ namespace test_project
             });
 
             var builder = new ConfigurationBuilder()
-        .SetBasePath(env.ContentRootPath)
-        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-        .AddEnvironmentVariables();
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
             Configuration = builder.Build();
 
         }

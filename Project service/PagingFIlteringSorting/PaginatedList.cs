@@ -28,7 +28,7 @@ namespace Project_service.PagingFIlteringSorting
             PageSize = pageSize;
             Count = count;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            AddRange(Data);
+            AddRange(items);
         }
 
         public bool HasPreviousPage
