@@ -21,7 +21,7 @@ namespace Project_service.PagingFIlteringSorting
         }
       
 
-        public PaginatedList(IEnumerable<T> items, int count, int pageIndex, int pageSize)
+        public PaginatedList(IEnumerable<T> items, int count, int? pageIndex, int pageSize)
         {
             Data = items;
             PageIndex = pageIndex;

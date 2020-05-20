@@ -34,7 +34,7 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter,  int? page)
+        public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter, int? page)
         {
 
             var vehicleMake = from v in db.VehicleMakes

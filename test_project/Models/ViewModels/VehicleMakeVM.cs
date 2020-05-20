@@ -9,9 +9,6 @@ namespace test_project.Models.ViewModels
 {
     public class  VehicleMakeVM
     {
-
-       
-
         public int Id { get; set; }      
         public string Name { get; set; }
         public string Abrv { get; set; }

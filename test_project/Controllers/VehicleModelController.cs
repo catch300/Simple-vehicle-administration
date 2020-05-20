@@ -16,13 +16,13 @@ namespace test_project.Controllers
     public class VehicleModelController : Controller
     {
         private readonly VehicleContext _context;
-        private readonly IVehicleModel _vehicleModel;
+        private readonly IVehicleModel _vehicleModelService;
         private readonly IMapper _mapper;
 
         public VehicleModelController(VehicleContext context, IVehicleModel vehicleModel, IMapper mapper)
         {
             _context = context;
-            _vehicleModel = vehicleModel;
+            _vehicleModelService = vehicleModel;
             _mapper = mapper;
         }
 
@@ -36,7 +36,7 @@ namespace test_project.Controllers
             ViewBag.CurrentFilter = filter.SearchString;
 
             //PaginatedList of VehicleModels
-            var listOfVehicleModels = await _vehicleModel.GetVehicleModels(sort, filter, page);
+            var listOfVehicleModels = await _vehicleModelService.GetVehicleModels(sort, filter, page);
           
             //PaginatedList of VehicleModelVM (ViewModel)
             var vehicleModels = new PaginatedList<VehicleModelVM>(
@@ -56,7 +56,7 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
+            var vehicleModel = await _vehicleModelService.GetVehicleModel(id);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -80,7 +80,7 @@ namespace test_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleModel.CreateVehicleModel(vehicleModel);
+                await _vehicleModelService.CreateVehicleModel(vehicleModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -97,7 +97,7 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModelID = await _vehicleModel.GetVehicleModel(id);
+            var vehicleModelID = await _vehicleModelService.GetVehicleModel(id);
             if (vehicleModelID == null)
             {
                 return NotFound();
@@ -123,7 +123,7 @@ namespace test_project.Controllers
             {
                 try
                 {
-                    await _vehicleModel.EditVehicleModel(vehicleModel);
+                    await _vehicleModelService.EditVehicleModel(vehicleModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,7 +143,7 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
+            var vehicleModel = await _vehicleModelService.GetVehicleModel(id);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -157,7 +157,7 @@ namespace test_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _vehicleModel.DeleteVehicleModel(id);
+            await _vehicleModelService.DeleteVehicleModel(id);
             return RedirectToAction(nameof(Index));
         }
 
