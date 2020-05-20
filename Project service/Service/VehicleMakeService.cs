@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
-using cloudscribe.Pagination.Models;
+using Project_service.PagingFIlteringSorting;
+
 
 namespace Project_service.Service
 {
@@ -18,42 +19,14 @@ namespace Project_service.Service
             db = _db;
         }
 
-        //SORTING
-        public IEnumerable<VehicleMake> SortVehicleMakes(IEnumerable<VehicleMake> _vehiclemake)
-        {
-            return _vehiclemake.OrderBy(x => x.Name);
-        }
-
-        //FILTERING
-        public IEnumerable<VehicleMake> SearcVehicleMakes(string SearchString)
-        {
-            return db.VehicleMakes.Where(x => x.Name.Contains(SearchString));
-        }
-
-
-        //PAGING
-        public async Task<PagedResult<VehicleMake>> Paging(int pageNumber, int pageSize)
-        {
-            
-
-            //PAGINATION
-            var result = new   PagedResult<VehicleMake>
-            {
-                Data = await db.VehicleMakes.AsNoTracking().ToListAsync(),
-                TotalItems =await db.VehicleMakes.CountAsync(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-            return  result;
-        }
-
+       
 
         //GET - VehicleMake
         public async Task<VehicleMake> GetVehicleMake(int? id )
         {
             if (db != null)
             {
-                return await db.VehicleMakes.FindAsync(id); 
+                return await db.VehicleMakes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);; 
             }
 
             return null;
@@ -61,18 +34,37 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<List<VehicleMake>> GetVehicleMakes()
+        public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter, int? page)
         {
-            if (db != null)
-            {
-                return await db.VehicleMakes.ToListAsync();
-                
-            }
-                return null;
-                 
-        }
 
-       
+            var vehicleMake = from v in db.VehicleMakes
+                              select v;
+
+            if (filter.SearchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                filter.SearchString = filter.CurrentFilter;
+            }
+            
+            if (!string.IsNullOrEmpty(filter.SearchString))
+            {
+                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(filter.SearchString)
+                                                || v.Abrv.Contains(filter.SearchString));
+            }
+            vehicleMake = sort.SortOrder switch
+            {
+                "name_desc" => vehicleMake.OrderByDescending(x => x.Name),
+                "abrv_desc" => vehicleMake.OrderByDescending(x => x.Abrv),
+                "abrv_asc" => vehicleMake.OrderBy(x => x.Abrv),
+                _ => vehicleMake.OrderBy(x => x.Name),
+            };
+
+            int pageSize = 3;
+           return  await PaginatedList<VehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
+        }
 
         //CREATE - VehicleMake
         public async Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake)
@@ -87,8 +79,8 @@ namespace Project_service.Service
         public async Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake)
         {
             var vehicleMake = db.VehicleMakes.Attach(_vehicleMake);
-            vehicleMake.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-           await db.SaveChangesAsync();
+            vehicleMake.State = EntityState.Modified;
+            await db.SaveChangesAsync();
             return _vehicleMake;
         }
 

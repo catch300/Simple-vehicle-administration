@@ -2,30 +2,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Models;
+using Project_service.PagingFIlteringSorting;
 using Project_service.Service;
+using test_project.Models.ViewModels;
 
 namespace test_project.Controllers
 {
     public class VehicleModelController : Controller
     {
         private readonly VehicleContext _context;
-        private readonly IVehicleModel _vehicleModel;
+        private readonly IVehicleModel _vehicleModelService;
+        private readonly IMapper _mapper;
 
-        public VehicleModelController(VehicleContext context, IVehicleModel vehicleModel)
+        public VehicleModelController(VehicleContext context, IVehicleModel vehicleModel, IMapper mapper)
         {
             _context = context;
-            _vehicleModel = vehicleModel;
+            _vehicleModelService = vehicleModel;
+            _mapper = mapper;
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Sorting sort, Filtering filter,  int? page)
         {
-            var vehicleContext = _vehicleModel.GetVehicleModels();
-            return View(await vehicleContext);
+            ViewBag.CurrentSort = sort.SortOrder;
+            ViewBag.sortByMake = sort.SortOrder == "make_desc" ? "make_asc" : "make_desc";
+            ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
+            ViewBag.sortByAbrv = sort.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
+            ViewBag.CurrentFilter = filter.SearchString;
+
+            //PaginatedList of VehicleModels
+            var listOfVehicleModels = await _vehicleModelService.GetVehicleModels(sort, filter, page);
+          
+            //PaginatedList of VehicleModelVM (ViewModel)
+            var vehicleModels = new PaginatedList<VehicleModelVM>(
+                                     _mapper.Map<List<VehicleModelVM>>(listOfVehicleModels), //items
+                                     listOfVehicleModels.Count,                             // count
+                                     listOfVehicleModels.PageIndex ?? 1,                    //PageIndex
+                                     listOfVehicleModels.PageSize);                         //PageSize
+
+            return View(vehicleModels);
         }
 
         // GET: VehicleModel/Details/5
@@ -36,19 +56,18 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
+            var vehicleModel = await _vehicleModelService.GetVehicleModel(id);
             if (vehicleModel == null)
             {
                 return NotFound();
             }
 
-            return View(vehicleModel);
+            return View(_mapper.Map<VehicleModelVM>(vehicleModel));
         }
 
         // GET: VehicleModel/Create
         public IActionResult Create()
-        {
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name");
+        {   ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name");
             return View();
         }
 
@@ -61,12 +80,13 @@ namespace test_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleModel.CreateVehicleModel(vehicleModel);
+                await _vehicleModelService.CreateVehicleModel(vehicleModel);
 
                 return RedirectToAction(nameof(Index));
             }
+           
             ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModel.MakeId);
-            return View(vehicleModel);
+            return View(_mapper.Map<VehicleModelVM>(vehicleModel));
         }
 
         // GET: VehicleModel/Edit/5
@@ -77,13 +97,14 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
-            if (vehicleModel == null)
+            var vehicleModelID = await _vehicleModelService.GetVehicleModel(id);
+            if (vehicleModelID == null)
             {
                 return NotFound();
             }
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModel.MakeId);
-            return View(vehicleModel);
+
+            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModelID.MakeId);
+            return View(_mapper.Map<VehicleModelVM>(vehicleModelID));
         }
 
         // POST: VehicleModel/Edit/5
@@ -102,18 +123,11 @@ namespace test_project.Controllers
             {
                 try
                 {
-                    await _vehicleModel.EditVehicleModel(vehicleModel);
+                    await _vehicleModelService.EditVehicleModel(vehicleModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleModelExists(vehicleModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                     throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -129,7 +143,7 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
+            var vehicleModel = await _vehicleModelService.GetVehicleModel(id);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -143,13 +157,10 @@ namespace test_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _vehicleModel.DeleteVehicleModel(id);
+            await _vehicleModelService.DeleteVehicleModel(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VehicleModelExists(int id)
-        {
-            return _context.VehicleModels.Any(e => e.Id == id);
-        }
+        
     }
 }

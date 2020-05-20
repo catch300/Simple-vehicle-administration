@@ -4,28 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Service;
-
+using AutoMapper;
+using Autofac;
+using AutoMapper.Contrib.Autofac.DependencyInjection;
 
 namespace test_project
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
+        
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        
-       
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,8 +36,15 @@ namespace test_project
             services.AddDbContext<VehicleContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
-            services.AddScoped<IVehicleMake, VehicleMakeService>();
-            services.AddScoped<IVehicleModel, VehicleModelService>();
+        }
+
+        //Container Builder for Autofac 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<VehicleMakeService>().As<IVehicleMake>();
+            builder.RegisterType<VehicleModelService>().As<IVehicleModel>();
+            builder.AddAutoMapper(typeof(Startup).Assembly);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +73,14 @@ namespace test_project
                     name: "default",
                     pattern: "{controller=VehicleMake}/{action=Index}/{id?}");
             });
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
+
         }
     }
 }

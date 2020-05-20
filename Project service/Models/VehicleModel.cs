@@ -13,7 +13,6 @@ namespace Project_service.Models
         [Key]
         public int Id { get; set; }
 
-        
         public VehicleMake Make { get; set; }
         public  int MakeId { get; set; }
 

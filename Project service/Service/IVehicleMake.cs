@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using cloudscribe.Pagination.Models;
 using Project_service.Models;
+using Project_service.PagingFIlteringSorting;
 
 namespace Project_service.Service
 {
    public interface IVehicleMake
     {
-        IEnumerable<VehicleMake> SortVehicleMakes(IEnumerable<VehicleMake> _vehiclemake);
-        IEnumerable<VehicleMake> SearcVehicleMakes(string SearchString);
-
-        Task<PagedResult<VehicleMake>> Paging(int pageNumber, int pageSize);
+       
 
         Task<VehicleMake> GetVehicleMake(int? id);
 
-        Task<List<VehicleMake>> GetVehicleMakes();
+        Task<PaginatedList<VehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter, int? page);
 
-       public Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
+        Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
 
         Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake);
 
