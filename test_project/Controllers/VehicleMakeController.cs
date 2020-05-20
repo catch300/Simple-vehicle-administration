@@ -37,20 +37,14 @@ namespace test_project.Controllers
             ViewBag.CurrentFilter = filter.SearchString;
 
            //PaginatedList of VehicleMakes
-            var ListOfvehicleMakes = await _vehicleMakeService.GetVehicleMakes(sort, filter, page);
+            var listOfvehicleMakes = await _vehicleMakeService.GetVehicleMakes(sort, filter, page);
 
-            
-            var mapVehicleMake = _mapper.Map<List<VehicleMakeVM>>(ListOfvehicleMakes);
-            var count = ListOfvehicleMakes.Count;
-            var PageIndex = ListOfvehicleMakes.PageIndex ?? 1;
-            var PageSize = ListOfvehicleMakes.PageSize;
-
-            //PaginatedList of VehicleMakeVM
+            //PaginatedList of VehicleMakeVM (ViewModel)
             var vehiclemakes = new PaginatedList<VehicleMakeVM>(
-                                     mapVehicleMake,
-                                     count,
-                                     PageIndex,
-                                     PageSize);
+                                     _mapper.Map<List<VehicleMakeVM>>(listOfvehicleMakes), //items
+                                     listOfvehicleMakes.Count,                             // count
+                                     listOfvehicleMakes.PageIndex ?? 1,                    //PageIndex
+                                     listOfvehicleMakes.PageSize);                         //PageSize
            
 
             return View(vehiclemakes);

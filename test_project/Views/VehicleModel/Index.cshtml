@@ -1,12 +1,13 @@
 ﻿@using Project_service.PagingFIlteringSorting;
+@using test_project.Models.ViewModels;
 
-@model PaginatedList<Project_service.Models.VehicleModel>
+@model PaginatedList<VehicleModelVM>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>List of Vehicle Models</h1>
 
 <p>
     <a asp-action="Create">Create New</a>

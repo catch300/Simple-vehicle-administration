@@ -33,13 +33,17 @@ namespace test_project.Controllers
             ViewBag.sortByMake = sort.SortOrder == "make_desc" ? "make_asc" : "make_desc";
             ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
             ViewBag.sortByAbrv = sort.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
-
-
             ViewBag.CurrentFilter = filter.SearchString;
 
-            var vehicleModels = await _vehicleModel.GetVehicleModels(sort, filter, page);
-
-            //var listOfVehicleModels = _mapper.Map<VehicleModelVM>(vehicleModels);
+            //PaginatedList of VehicleModels
+            var listOfVehicleModels = await _vehicleModel.GetVehicleModels(sort, filter, page);
+          
+            //PaginatedList of VehicleModelVM (ViewModel)
+            var vehicleModels = new PaginatedList<VehicleModelVM>(
+                                     _mapper.Map<List<VehicleModelVM>>(listOfVehicleModels), //items
+                                     listOfVehicleModels.Count,                             // count
+                                     listOfVehicleModels.PageIndex ?? 1,                    //PageIndex
+                                     listOfVehicleModels.PageSize);                         //PageSize
 
             return View(vehicleModels);
         }
@@ -58,13 +62,12 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            return View(vehicleModel);
+            return View(_mapper.Map<VehicleModelVM>(vehicleModel));
         }
 
         // GET: VehicleModel/Create
         public IActionResult Create()
-        {
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name");
+        {   ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name");
             return View();
         }
 
@@ -81,8 +84,9 @@ namespace test_project.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+           
             ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModel.MakeId);
-            return View(vehicleModel);
+            return View(_mapper.Map<VehicleModelVM>(vehicleModel));
         }
 
         // GET: VehicleModel/Edit/5
@@ -93,13 +97,14 @@ namespace test_project.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleModel.GetVehicleModel(id);
-            if (vehicleModel == null)
+            var vehicleModelID = await _vehicleModel.GetVehicleModel(id);
+            if (vehicleModelID == null)
             {
                 return NotFound();
             }
-            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModel.MakeId);
-            return View(vehicleModel);
+
+            ViewData["MakeId"] = new SelectList(_context.VehicleMakes, "Id", "Name", vehicleModelID.MakeId);
+            return View(_mapper.Map<VehicleModelVM>(vehicleModelID));
         }
 
         // POST: VehicleModel/Edit/5
@@ -122,14 +127,7 @@ namespace test_project.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleModelExists(vehicleModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                     throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -163,9 +161,6 @@ namespace test_project.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VehicleModelExists(int id)
-        {
-            return _context.VehicleModels.Any(e => e.Id == id);
-        }
+        
     }
 }

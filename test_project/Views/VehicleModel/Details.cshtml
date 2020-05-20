@@ -1,5 +1,6 @@
-﻿@model Project_service.Models.VehicleModel
+﻿@using test_project.Models.ViewModels;
 
+@model VehicleModelVM
 @{
     ViewData["Title"] = "Details";
 }
@@ -10,24 +11,26 @@
     <h4>VehicleModel</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Make)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Make.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Make.Abrv)
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Make.Abrv)
         </dd>
-        <dt class = "col-sm-2">
+        
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Abrv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Abrv)
-        </dd>
+        
     </dl>
 </div>
 <div>

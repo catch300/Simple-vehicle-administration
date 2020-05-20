@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,11 +11,8 @@ using Project_service.Models;
 using Microsoft.EntityFrameworkCore;
 using Project_service.Service;
 using AutoMapper;
-using test_project.MappingProfiles;
 using Autofac;
-using test_project.Models.ViewModels;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
-using Project_service.PagingFIlteringSorting;
 
 namespace test_project
 {

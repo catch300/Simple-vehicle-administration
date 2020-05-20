@@ -59,8 +59,8 @@ namespace Project_service.Service
                 "name_desc" => vehicleModel.OrderByDescending(x => x.Name),
                 "abrv_desc" => vehicleModel.OrderByDescending(x => x.Abrv),
                 "abrv_asc" => vehicleModel.OrderBy(x => x.Abrv),
-                "make_asc" => vehicleModel.OrderBy(x => x.Make),
-                "make_desc" => vehicleModel.OrderByDescending(x => x.Make),
+                "make_asc" => vehicleModel.OrderBy(x => x.Make.Name),
+                "make_desc" => vehicleModel.OrderByDescending(x => x.Make.Name),
                 _ => vehicleModel.OrderBy(x => x.Name),
             };
 
