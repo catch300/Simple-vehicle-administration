@@ -11,7 +11,7 @@ namespace Project_service.PagingFIlteringSorting
 
         
         public int? PageIndex { get;  set; }
-        public int TotalPages { get; private set; }
+        public int TotalPages { get;  set; }
         public  int PageSize { get;  set; }
         public IEnumerable<T> Data { get ; set; }
         public  new int Count { get; set; }

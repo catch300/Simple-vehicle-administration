@@ -10,23 +10,24 @@ using Project_service.PagingFIlteringSorting;
 
 namespace Project_service.Service
 {
-    public class VehicleMakeService : IVehicleMake
+    public class VehicleMakeService : IVehicleMakeService
     {
-        private readonly VehicleContext db = new VehicleContext();
+        private readonly VehicleContext _db = new VehicleContext();
+        
 
-        public VehicleMakeService( VehicleContext _db)
-        {
-            db = _db;
+        public VehicleMakeService( VehicleContext db)
+        {         
+            _db = db;     
         }
 
        
 
         //GET - VehicleMake
-        public async Task<VehicleMake> GetVehicleMake(int? id )
+        public async Task<IVehicleMake> GetVehicleMake(int? id )
         {
-            if (db != null)
+            if (_db != null)
             {
-                return await db.VehicleMakes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);; 
+                return await _db.VehicleMakes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);; 
             }
 
             return null;
@@ -34,10 +35,10 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<PaginatedList<VehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter, int? page)
+        public async Task<PaginatedList<IVehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter, int? page)
         {
 
-            var vehicleMake = from v in db.VehicleMakes
+            var vehicleMake = from v in _db.VehicleMakes
                               select v;
 
             if (filter.SearchString != null)
@@ -63,36 +64,36 @@ namespace Project_service.Service
             };
 
             int pageSize = 3;
-           return  await PaginatedList<VehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
+           return  await PaginatedList<IVehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
         }
 
         //CREATE - VehicleMake
-        public async Task<VehicleMake> CreateVehicleMake(VehicleMake _vehicleMake)
+        public async Task<IVehicleMake> CreateVehicleMake(VehicleMake _vehicleMake)
         {
-            db.VehicleMakes.Add(_vehicleMake);
-            await db.SaveChangesAsync();
+            _db.VehicleMakes.Add(_vehicleMake);
+            await _db.SaveChangesAsync();
             return _vehicleMake;
 
         }
 
         //UPDATE - VehicleMake
-        public async Task<VehicleMake> EditVehicleMake(VehicleMake _vehicleMake)
+        public async Task<IVehicleMake> EditVehicleMake(VehicleMake _vehicleMake)
         {
-            var vehicleMake = db.VehicleMakes.Attach(_vehicleMake);
+            var vehicleMake = _db.VehicleMakes.Attach(_vehicleMake);
             vehicleMake.State = EntityState.Modified;
-            await db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return _vehicleMake;
         }
 
         //DELETE - VehicleMake
-        public async Task<VehicleMake> DeleteVehicleMake(int id)
+        public async Task<IVehicleMake> DeleteVehicleMake(int id)
         {
-            VehicleMake vehicleMake = db.VehicleMakes.Find(id);
+            VehicleMake vehicleMake = _db.VehicleMakes.Find(id);
 
             if (vehicleMake != null)
             {
-                db.Remove(vehicleMake);
-               await db.SaveChangesAsync();
+                _db.Remove(vehicleMake);
+               await _db.SaveChangesAsync();
             }
             return vehicleMake;
 

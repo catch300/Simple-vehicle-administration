@@ -9,24 +9,24 @@ using Project_service.PagingFIlteringSorting;
 
 namespace Project_service.Service
 {
-    public class VehicleModelService : IVehicleModel
+    public class VehicleModelService : IVehicleModelService
     {
-        private readonly VehicleContext db = new VehicleContext();
+        private readonly VehicleContext _db = new VehicleContext();
 
-        public VehicleModelService(VehicleContext _db)
+        public VehicleModelService(VehicleContext db)
         {
-            db = _db;
+            _db = db;
         }
 
       
 
         //GET - VehicleModel
-        public async Task<VehicleModel> GetVehicleModel(int? Id)
+        public async Task<IVehicleModel> GetVehicleModel(int? Id)
         {
-            var vehicleModel = await db.VehicleModels
+            var vehicleModel = await _db.VehicleModels
                .Include(v => v.Make)
                .FirstOrDefaultAsync(m => m.Id == Id);
-            if (db != null)
+            if (_db != null)
             {
                 return  vehicleModel;
             }
@@ -35,9 +35,9 @@ namespace Project_service.Service
         }
 
         //GETALL - VehicleModels
-        public async Task<PaginatedList<VehicleModel>> GetVehicleModels(Sorting sort, Filtering filter, int? page)
+        public async Task<PaginatedList<IVehicleModel>> GetVehicleModels(Sorting sort, Filtering filter, int? page)
         {
-            var vehicleModel = from v in db.VehicleModels.Include(v => v.Make)
+            var vehicleModel = from v in _db.VehicleModels.Include(v => v.Make)
                                  select v;
             
             if (filter.SearchString != null)
@@ -65,39 +65,39 @@ namespace Project_service.Service
             };
 
             int pageSize = 3;
-            return await PaginatedList<VehicleModel>.CreateAsync(vehicleModel.AsNoTracking(), page ?? 1, pageSize);
+            return await PaginatedList<IVehicleModel>.CreateAsync(vehicleModel.AsNoTracking(), page ?? 1, pageSize);
 
         }
 
 
 
         //CREATE - VehicleModel
-        public async Task<VehicleModel> CreateVehicleModel(VehicleModel _vehicleModel)
+        public async Task<IVehicleModel> CreateVehicleModel(VehicleModel _vehicleModel)
         {
 
-            db.VehicleModels.Add(_vehicleModel);
-            await db.SaveChangesAsync();
+            _db.VehicleModels.Add(_vehicleModel);
+            await _db.SaveChangesAsync();
             return _vehicleModel;
         }
 
         //UPDATE - VehicleModel
-        public async Task<VehicleModel> EditVehicleModel(VehicleModel _vehicleModel)
+        public async Task<IVehicleModel> EditVehicleModel(VehicleModel _vehicleModel)
         {
-            var vehicleModel = db.VehicleModels.Attach(_vehicleModel);
+            var vehicleModel = _db.VehicleModels.Attach(_vehicleModel);
             vehicleModel.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            await db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return _vehicleModel;
         }
 
         //DELETE - VehicleModel
-        public async Task<VehicleModel> DeleteVehicleModel(int id)
+        public async Task<IVehicleModel> DeleteVehicleModel(int id)
         {
 
-            VehicleModel vehicleModel = db.VehicleModels.Find(id);
+            VehicleModel vehicleModel = _db.VehicleModels.Find(id);
             if (vehicleModel != null)
             {
-                db.VehicleModels.Remove(vehicleModel);
-                await db.SaveChangesAsync();
+                _db.VehicleModels.Remove(vehicleModel);
+                await _db.SaveChangesAsync();
             }
             return vehicleModel;
         }

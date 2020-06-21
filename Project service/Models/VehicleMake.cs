@@ -7,11 +7,9 @@ using System.Text;
 namespace Project_service.Models
 {
     [Table("VehicleMake")]
-    public class VehicleMake 
+    public class VehicleMake : IVehicleMake
     {
-        
-
-
+       
         [Key]
         public int Id { get; set; }
 

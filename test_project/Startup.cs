@@ -13,6 +13,7 @@ using Project_service.Service;
 using AutoMapper;
 using Autofac;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
+using Project_service.PagingFIlteringSorting;
 
 namespace test_project
 {
@@ -41,8 +42,8 @@ namespace test_project
         //Container Builder for Autofac 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<VehicleMakeService>().As<IVehicleMake>();
-            builder.RegisterType<VehicleModelService>().As<IVehicleModel>();
+            builder.RegisterType<VehicleMakeService>().As<IVehicleMakeService>();
+            builder.RegisterType<VehicleModelService>().As<IVehicleModelService>();
             builder.AddAutoMapper(typeof(Startup).Assembly);
 
         }
