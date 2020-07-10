@@ -16,10 +16,11 @@ namespace test_project.Controllers
     public class VehicleModelController : Controller
     {
         private readonly VehicleContext _context;
-        private readonly IVehicleModel _vehicleModelService;
+        private readonly IVehicleModelService _vehicleModelService;
         private readonly IMapper _mapper;
+        
 
-        public VehicleModelController(VehicleContext context, IVehicleModel vehicleModel, IMapper mapper)
+        public VehicleModelController(VehicleContext context, IVehicleModelService vehicleModel, IMapper mapper)
         {
             _context = context;
             _vehicleModelService = vehicleModel;

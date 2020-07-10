@@ -12,24 +12,21 @@ using Project_service.Service;
 using AutoMapper;
 using test_project.Models.ViewModels;
 using Project_service.PagingFIlteringSorting;
-using AutoMapper.QueryableExtensions;
-
 namespace test_project.Controllers
 {
     public class VehicleMakeController : Controller
     {
         
-        private readonly IVehicleMake _vehicleMakeService;
+        private readonly IVehicleMakeService _vehicleMakeService;
         private readonly IMapper _mapper;
-
-        public VehicleMakeController( IVehicleMake vehicleMakeService, IMapper mapper)
+        public VehicleMakeController(IVehicleMakeService vehicleMakeService, IMapper mapper)
         {
             _vehicleMakeService = vehicleMakeService;
             _mapper = mapper;
     }
 
         // GET: VehicleMake
-        public async Task<IActionResult> Index(Sorting sort, Filtering filter,  int? page)
+        public async Task<IActionResult> Index(Sorting sort, Filtering filter, int? page)
         {
             ViewBag.CurrentSort = sort.SortOrder;
             ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
@@ -41,8 +38,8 @@ namespace test_project.Controllers
 
             //PaginatedList of VehicleMakeVM (ViewModel)
             var vehiclemakes = new PaginatedList<VehicleMakeVM>(
-                                     _mapper.Map<List<VehicleMakeVM>>(listOfvehicleMakes), //items
-                                     listOfvehicleMakes.Count,                             // count
+                                     _mapper.Map<List<VehicleMakeVM>>(listOfvehicleMakes), //Items
+                                     listOfvehicleMakes.Count,                             //Count
                                      listOfvehicleMakes.PageIndex ?? 1,                    //PageIndex
                                      listOfvehicleMakes.PageSize);                         //PageSize
            
