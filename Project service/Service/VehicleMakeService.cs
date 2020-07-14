@@ -14,10 +14,10 @@ namespace Project_service.Service
     {
         private readonly VehicleContext _db = new VehicleContext();
         
-
         public VehicleMakeService( VehicleContext db)
         {         
-            _db = db;     
+            _db = db;
+            
         }
 
        
@@ -35,36 +35,37 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<PaginatedList<IVehicleMake>> GetVehicleMakes(Sorting sort, Filtering filter, int? page)
+        public async Task<PaginatedList<IVehicleMake>> GetVehicleMakes(Sorting sorting, Filtering filtering, int? page)
         {
-
+            
             var vehicleMake = from v in _db.VehicleMakes
                               select v;
 
-            if (filter.SearchString != null)
+            if (filtering.SearchString != null)
             {
                 page = 1;
             }
             else
             {
-                filter.SearchString = filter.CurrentFilter;
+                filtering.SearchString = filtering.CurrentFilter;
             }
             
-            if (!string.IsNullOrEmpty(filter.SearchString))
+            if (!string.IsNullOrEmpty(filtering.SearchString))
             {
-                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(filter.SearchString)
-                                                || v.Abrv.Contains(filter.SearchString));
+                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(filtering.SearchString)
+                                                || v.Abrv.Contains(filtering.SearchString));
             }
-            vehicleMake = sort.SortOrder switch
+            vehicleMake = sorting.SortOrder switch
             {
                 "name_desc" => vehicleMake.OrderByDescending(x => x.Name),
                 "abrv_desc" => vehicleMake.OrderByDescending(x => x.Abrv),
                 "abrv_asc" => vehicleMake.OrderBy(x => x.Abrv),
                 _ => vehicleMake.OrderBy(x => x.Name),
             };
-
+            PaginatedList<IVehicleMake> paginatedList = new PaginatedList<IVehicleMake>();
             int pageSize = 3;
-           return  await PaginatedList<IVehicleMake>.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
+            
+           return await paginatedList.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);
         }
 
         //CREATE - VehicleMake

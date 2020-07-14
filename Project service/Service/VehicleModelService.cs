@@ -64,8 +64,9 @@ namespace Project_service.Service
                 _ => vehicleModel.OrderBy(x => x.Name),
             };
 
+            PaginatedList<IVehicleModel> paginatedList = new PaginatedList<IVehicleModel>();
             int pageSize = 3;
-            return await PaginatedList<IVehicleModel>.CreateAsync(vehicleModel.AsNoTracking(), page ?? 1, pageSize);
+            return await paginatedList.CreateAsync(vehicleModel.AsNoTracking(), page ?? 1, pageSize);
 
         }
 

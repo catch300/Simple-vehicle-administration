@@ -4,9 +4,13 @@ using System.Text;
 
 namespace Project_service.PagingFIlteringSorting
 {
-    public class Filtering : IFiltering
+    public abstract class ISorting
     {
-        public Filtering( ) { }
-       
+        
+        public string SortOrder {get; set;}
+
+        protected ISorting( ) { }
+        
+
     }
 }

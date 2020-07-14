@@ -44,6 +44,9 @@ namespace test_project
         {
             builder.RegisterType<VehicleMakeService>().As<IVehicleMakeService>();
             builder.RegisterType<VehicleModelService>().As<IVehicleModelService>();
+            builder.RegisterType<Filtering>().As<IFiltering>();
+            builder.RegisterType<Sorting>().As<ISorting>();
+           
             builder.AddAutoMapper(typeof(Startup).Assembly);
 
         }
