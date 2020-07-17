@@ -7,27 +7,14 @@ using System.Threading.Tasks;
 
 namespace Project_service.PagingFIlteringSorting
 {
-    public abstract class IPaginatedList<T> : List<T>
+    public interface IPaginatedList<T> 
     {
         public int? PageIndex { get; set; }
         public int TotalPages { get; set; }
         public int PageSize { get; set; }
         public IEnumerable<T> Data { get; set; }
-        public new int Count { get; set; }
-        public IPaginatedList( )
-        {
-
-        }
-
-        protected IPaginatedList(IEnumerable<T> items, int count, int? pageIndex, int pageSize)
-        {
-            Data = items;
-            PageIndex = pageIndex;
-            PageSize = pageSize;
-            Count = count;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            AddRange(items);
-        }
+        public int Count { get; set; }
+       
 
         public bool HasPreviousPage
         {
@@ -45,7 +32,7 @@ namespace Project_service.PagingFIlteringSorting
             }
         }
 
-        public abstract Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize);
+        public  Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize);
         
     }
 }
