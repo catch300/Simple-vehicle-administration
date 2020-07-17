@@ -13,11 +13,12 @@ namespace Project_service.Service
     public class VehicleMakeService : IVehicleMakeService
     {
         private readonly VehicleContext _db = new VehicleContext();
-        
+
+
         public VehicleMakeService( VehicleContext db)
         {         
             _db = db;
-            
+
         }
 
        
@@ -35,9 +36,9 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<PaginatedList<IVehicleMake>> GetVehicleMakes(Sorting sorting, Filtering filtering, int? page)
+        public async Task<IPaginatedList<IVehicleMake>> GetVehicleMakes(Sort sorting, FIlter filtering, int? page)
         {
-            
+
             var vehicleMake = from v in _db.VehicleMakes
                               select v;
 
@@ -62,7 +63,7 @@ namespace Project_service.Service
                 "abrv_asc" => vehicleMake.OrderBy(x => x.Abrv),
                 _ => vehicleMake.OrderBy(x => x.Name),
             };
-            PaginatedList<IVehicleMake> paginatedList = new PaginatedList<IVehicleMake>();
+            IPaginatedList<IVehicleMake> paginatedList = new PaginatedList<IVehicleMake>();
             int pageSize = 3;
             
            return await paginatedList.CreateAsync(vehicleMake.AsNoTracking(), page ?? 1, pageSize);

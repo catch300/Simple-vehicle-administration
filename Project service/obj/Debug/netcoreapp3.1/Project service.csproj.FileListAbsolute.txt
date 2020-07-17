@@ -8,5 +8,4 @@ C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\Project serv
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\Project service\bin\Debug\netcoreapp3.1\Project service.pdb
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\Project service\obj\Debug\netcoreapp3.1\Project service.dll
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\Project service\obj\Debug\netcoreapp3.1\Project service.pdb
-C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\Project service\obj\Debug\netcoreapp3.1\Project service.csprojAssemblyReference.cache
 C:\Users\catch\Documents\Visual Studio 2019 - Projekti\test_project\Project service\obj\Debug\netcoreapp3.1\Project service.csproj.CoreCompileInputs.cache

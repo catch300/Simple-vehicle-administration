@@ -4,9 +4,11 @@ using System.Text;
 
 namespace Project_service.PagingFIlteringSorting
 {
-    public class Filtering : IFiltering
+    public abstract class Filtering 
     {
-        public Filtering( ) { }
-       
+        public string SearchString { get; set; }
+        public string CurrentFilter { get; set; }
+        protected Filtering( ) { }
+
     }
 }

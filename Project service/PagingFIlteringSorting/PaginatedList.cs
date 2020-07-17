@@ -6,18 +6,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project_service.PagingFIlteringSorting
 {
-    public class PaginatedList<T> : IPaginatedList<T>
+    public class PaginatedList<T> : List<T>, IPaginatedList<T>
     {
-
+        public int? PageIndex { get; set; }
+        public int TotalPages { get; set; }
+        public int PageSize { get; set; }
+        public IEnumerable<T> Data { get; set; }
+        public new int Count { get; set; }
 
         public PaginatedList( ) { }
-      
 
-        public PaginatedList(IEnumerable<T> items, int count, int? pageIndex, int pageSize) : base(items,count, pageIndex, pageSize)
+        public PaginatedList(IEnumerable<T> items, int count, int? pageIndex, int pageSize)
         {
+            Data = items;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+            Count = count;
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            AddRange(items);
+        }
+        public bool HasPreviousPage
+        {
+            get
+            {
+                return (PageIndex > 1);
+            }
         }
 
-        public  override async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
+        public bool HasNextPage
+        {
+            get
+            {
+                return (PageIndex < TotalPages);
+            }
+        }
+
+
+        public  async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
         {
 
             var count = await source.CountAsync();
