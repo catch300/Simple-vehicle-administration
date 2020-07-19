@@ -14,6 +14,7 @@ namespace Project_service.Service
     {
         private readonly VehicleContext _db = new VehicleContext();
 
+        
 
         public VehicleMakeService( VehicleContext db)
         {         
@@ -36,27 +37,27 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<IPaginatedList<IVehicleMake>> GetVehicleMakes(Sort sorting, FIlter filtering, int? page)
+        public async Task<IPaginatedList<IVehicleMake>> GetVehicleMakes(ISorting sort, IFiltering filter, int? page)
         {
 
             var vehicleMake = from v in _db.VehicleMakes
                               select v;
 
-            if (filtering.SearchString != null)
+            if (filter.SearchString != null)
             {
                 page = 1;
             }
             else
             {
-                filtering.SearchString = filtering.CurrentFilter;
+                filter.SearchString = filter.CurrentFilter;
             }
             
-            if (!string.IsNullOrEmpty(filtering.SearchString))
+            if (!string.IsNullOrEmpty(filter.SearchString))
             {
-                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(filtering.SearchString)
-                                                || v.Abrv.Contains(filtering.SearchString));
+                vehicleMake = vehicleMake.Where(v=> v.Name.Contains(filter.SearchString)
+                                                || v.Abrv.Contains(filter.SearchString));
             }
-            vehicleMake = sorting.SortOrder switch
+            vehicleMake = sort.SortOrder switch
             {
                 "name_desc" => vehicleMake.OrderByDescending(x => x.Name),
                 "abrv_desc" => vehicleMake.OrderByDescending(x => x.Abrv),

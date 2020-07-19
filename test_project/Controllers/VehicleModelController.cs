@@ -18,18 +18,27 @@ namespace test_project.Controllers
         private readonly VehicleContext _context;
         private readonly IVehicleModelService _vehicleModelService;
         private readonly IMapper _mapper;
-        
+        private ISorting _sort;
+        private IFiltering _filter;
+        private IPaginatedList<VehicleModelVM> _vehicleModels;
 
-        public VehicleModelController(VehicleContext context, IVehicleModelService vehicleModel, IMapper mapper)
+
+        public VehicleModelController(VehicleContext context, IVehicleModelService vehicleModel, IMapper mapper, ISorting sorting, IFiltering filtering, IPaginatedList<VehicleModelVM> vehicleModels)
         {
             _context = context;
             _vehicleModelService = vehicleModel;
             _mapper = mapper;
+            _sort = sorting;
+            _filter = filtering;
+            _vehicleModels = vehicleModels;
         }
 
         // GET: VehicleModel
         public async Task<IActionResult> Index(Sorting sort, Filtering filter,  int? page)
         {
+            _sort = new Sorting(sort.SortOrder);
+            _filter = new Filtering(filter.SearchString, filter.CurrentFilter);
+
             ViewBag.CurrentSort = sort.SortOrder;
             ViewBag.sortByMake = sort.SortOrder == "make_desc" ? "make_asc" : "make_desc";
             ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
@@ -40,13 +49,13 @@ namespace test_project.Controllers
             var listOfVehicleModels = await _vehicleModelService.GetVehicleModels(sort, filter, page);
           
             //PaginatedList of VehicleModelVM (ViewModel)
-            var vehicleModels = new PaginatedList<VehicleModelVM>(
+            _vehicleModels = new PaginatedList<VehicleModelVM>(
                                      _mapper.Map<List<VehicleModelVM>>(listOfVehicleModels), //items
                                      listOfVehicleModels.Count,                             // count
                                      listOfVehicleModels.PageIndex ?? 1,                    //PageIndex
                                      listOfVehicleModels.PageSize);                         //PageSize
 
-            return View(vehicleModels);
+            return View(_vehicleModels);
         }
 
         // GET: VehicleModel/Details/5

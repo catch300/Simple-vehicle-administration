@@ -13,7 +13,7 @@ namespace Project_service.Service
       
         Task<IVehicleModel> GetVehicleModel(int? Id);
 
-        Task<PaginatedList<IVehicleModel>> GetVehicleModels(Sorting sort, Filtering filter,  int? page);
+        Task<IPaginatedList<IVehicleModel>> GetVehicleModels(ISorting sorting, IFiltering filtering, int? page);
 
         Task<IVehicleModel> CreateVehicleModel(VehicleModel _vehicleModel);
 
