@@ -14,6 +14,7 @@ namespace Project_service.Service
     {
         private readonly VehicleContext _db = new VehicleContext();
 
+        
 
         public VehicleMakeService( VehicleContext db)
         {         
@@ -36,7 +37,7 @@ namespace Project_service.Service
 
         }
         //GETALL - VehicleMakes
-        public async Task<IPaginatedList<IVehicleMake>> GetVehicleMakes(Sort sorting, FIlter filtering, int? page)
+        public async Task<IPaginatedList<IVehicleMake>> GetVehicleMakes(ISorting sorting, IFiltering filtering, int? page)
         {
 
             var vehicleMake = from v in _db.VehicleMakes

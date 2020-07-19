@@ -19,41 +19,40 @@ namespace test_project.Controllers
         
         private readonly IVehicleMakeService _vehicleMakeService;
         private readonly IMapper _mapper;
-        public VehicleMakeController(IVehicleMakeService vehicleMakeService, IMapper mapper )
+        private ISorting _sorting;
+        private IFiltering _filtering;
+        private IPaginatedList<VehicleMakeVM> _vehicleMakes;
+
+        public VehicleMakeController(IVehicleMakeService vehicleMakeService, IMapper mapper, ISorting sorting, IFiltering filtering, IPaginatedList<VehicleMakeVM> vehicleMakes)
         {
             _vehicleMakeService = vehicleMakeService;
             _mapper = mapper;
-    }
+            _sorting = sorting;
+            _filtering = filtering;
+            _vehicleMakes = vehicleMakes;
+        }
 
         // GET: VehicleMake
-        public async Task<IActionResult> Index(Sort sorting, FIlter filtering, int? page)
+        public async Task<IActionResult> Index(Sorting sort, Filtering filter, int? page)
         {
+             _sorting = new Sorting(sort.SortOrder);
+             _filtering= new Filtering(filter.SearchString, filter.CurrentFilter);
 
-
-            ViewBag.CurrentSort = sorting.SortOrder;
-            ViewBag.sortByName = string.IsNullOrEmpty(sorting.SortOrder) ? "name_desc" : "";
-            ViewBag.sortByAbrv = sorting.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
-            ViewBag.CurrentFilter = filtering.SearchString;
+            ViewBag.CurrentSort = _sorting.SortOrder;
+            ViewBag.sortByName = string.IsNullOrEmpty(_sorting.SortOrder) ? "name_desc" : "";
+            ViewBag.sortByAbrv = _sorting.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
+            ViewBag.CurrentFilter = _filtering.SearchString;
 
            //PaginatedList of VehicleMakes
-            var listOfvehicleMakes = await _vehicleMakeService.GetVehicleMakes(sorting, filtering,page);
+            var listOfvehicleMakes = await _vehicleMakeService.GetVehicleMakes(_sorting, _filtering,page);
 
+             _vehicleMakes = new PaginatedList<VehicleMakeVM>(
+                                     _mapper.Map<List<VehicleMakeVM>>(listOfvehicleMakes),      //Items
+                                     listOfvehicleMakes.Count,                                  //Count
+                                     listOfvehicleMakes.PageIndex ?? 1,                         //PageIndex
+                                     listOfvehicleMakes.PageSize);                              //PageSize
 
-            IPaginatedList<VehicleMakeVM> vehicleMakes = new PaginatedList<VehicleMakeVM>(
-                _mapper.Map<List<VehicleMakeVM>>(listOfvehicleMakes), //Items
-                                     listOfvehicleMakes.Count,                             //Count
-                                     listOfvehicleMakes.PageIndex ?? 1,                    //PageIndex
-                                     listOfvehicleMakes.PageSize);
-
-            ////PaginatedList of VehicleMakeVM (ViewModel)
-            //var vehiclemakes = IPaginatedList<VehicleMakeVM>(
-            //                         _mapper.Map<List<VehicleMakeVM>>(listOfvehicleMakes), //Items
-            //                         listOfvehicleMakes.Count,                             //Count
-            //                         listOfvehicleMakes.PageIndex ?? 1,                    //PageIndex
-            //                         listOfvehicleMakes.PageSize);                         //PageSize
-           
-
-            return View(vehicleMakes);
+            return View(_vehicleMakes);
         }
 
         // GET: VehicleMake/Details/5
