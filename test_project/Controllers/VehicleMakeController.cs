@@ -19,32 +19,32 @@ namespace test_project.Controllers
         
         private readonly IVehicleMakeService _vehicleMakeService;
         private readonly IMapper _mapper;
-        private ISorting _sorting;
-        private IFiltering _filtering;
+        private ISorting _sort;
+        private IFiltering _filter;
         private IPaginatedList<VehicleMakeVM> _vehicleMakes;
 
-        public VehicleMakeController(IVehicleMakeService vehicleMakeService, IMapper mapper, ISorting sorting, IFiltering filtering, IPaginatedList<VehicleMakeVM> vehicleMakes)
+        public VehicleMakeController(IVehicleMakeService vehicleMakeService, IMapper mapper, ISorting sort, IFiltering filter, IPaginatedList<VehicleMakeVM> vehicleMakes)
         {
             _vehicleMakeService = vehicleMakeService;
             _mapper = mapper;
-            _sorting = sorting;
-            _filtering = filtering;
+            _sort = sort;
+            _filter = filter;
             _vehicleMakes = vehicleMakes;
         }
 
         // GET: VehicleMake
         public async Task<IActionResult> Index(Sorting sort, Filtering filter, int? page)
         {
-             _sorting = new Sorting(sort.SortOrder);
-             _filtering= new Filtering(filter.SearchString, filter.CurrentFilter);
+             _sort = new Sorting(sort.SortOrder);
+             _filter= new Filtering(filter.SearchString, filter.CurrentFilter);
 
-            ViewBag.CurrentSort = _sorting.SortOrder;
-            ViewBag.sortByName = string.IsNullOrEmpty(_sorting.SortOrder) ? "name_desc" : "";
-            ViewBag.sortByAbrv = _sorting.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
-            ViewBag.CurrentFilter = _filtering.SearchString;
+            ViewBag.CurrentSort = sort.SortOrder;
+            ViewBag.sortByName = string.IsNullOrEmpty(sort.SortOrder) ? "name_desc" : "";
+            ViewBag.sortByAbrv = sort.SortOrder == "abrv_desc" ? "abrv_asc" : "abrv_desc";
+            ViewBag.CurrentFilter = filter.SearchString;
 
            //PaginatedList of VehicleMakes
-            var listOfvehicleMakes = await _vehicleMakeService.GetVehicleMakes(_sorting, _filtering,page);
+            var listOfvehicleMakes = await _vehicleMakeService.GetVehicleMakes(sort, filter,page);
 
              _vehicleMakes = new PaginatedList<VehicleMakeVM>(
                                      _mapper.Map<List<VehicleMakeVM>>(listOfvehicleMakes),      //Items

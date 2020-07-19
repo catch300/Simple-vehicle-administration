@@ -13,7 +13,7 @@ namespace Project_service.Service
 
         Task<IVehicleMake> GetVehicleMake(int? id);
 
-        Task<IPaginatedList<IVehicleMake>> GetVehicleMakes(ISorting sorting, IFiltering filtering, int? page);
+        Task<IPaginatedList<IVehicleMake>> GetVehicleMakes(ISorting sort, IFiltering filter, int? page);
 
         Task<IVehicleMake> CreateVehicleMake(VehicleMake _vehicleMake);
 

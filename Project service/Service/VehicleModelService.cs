@@ -35,7 +35,7 @@ namespace Project_service.Service
         }
 
         //GETALL - VehicleModels
-        public async Task<PaginatedList<IVehicleModel>> GetVehicleModels(Sorting sort, Filtering filter, int? page)
+        public async Task<IPaginatedList<IVehicleModel>> GetVehicleModels(ISorting sort, IFiltering filter, int? page)
         {
             var vehicleModel = from v in _db.VehicleModels.Include(v => v.Make)
                                  select v;
@@ -64,7 +64,7 @@ namespace Project_service.Service
                 _ => vehicleModel.OrderBy(x => x.Name),
             };
 
-            PaginatedList<IVehicleModel> paginatedList = new PaginatedList<IVehicleModel>();
+            IPaginatedList<IVehicleModel> paginatedList = new PaginatedList<IVehicleModel>();
             int pageSize = 3;
             return await paginatedList.CreateAsync(vehicleModel.AsNoTracking(), page ?? 1, pageSize);
 
